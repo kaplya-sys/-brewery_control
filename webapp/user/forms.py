@@ -54,8 +54,8 @@ class CreateUserForm(FlaskForm):
     position = SelectField(
         'Должность:',
         choices=[
-            ('Пивовар', 'пивовар'),
-            ('Помощник', 'помощник')
+            ('Пивовар', 'Пивовар'),
+            ('Помощник', 'Помощник')
             ],
         render_kw={'class': 'form-select'}
         )

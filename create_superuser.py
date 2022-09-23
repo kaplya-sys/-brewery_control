@@ -19,10 +19,10 @@ with app.app_context():
     confirm_password = getpass('Повторите пароль: ')
 
     if password != confirm_password:
-        print('Пороли не совпадают.')
+        print('Пароли не совпадают.')
         sys.exit(0)
 
-    new_user = User(username=username, employee_position='Инженер')
+    new_user = User(username=username, employee_position='Пивовар')
     new_user.set_password(password)
     db.session.add(new_user)
     db.session.commit()

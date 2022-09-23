@@ -34,14 +34,20 @@ def process_log_in():
     if form.validate_on_submit:
         user = User.query.filter(User.username == form.username.data).first()
 
-        if user and user.check_password(form.password.data):
-            login_user(user, remember=form.remember_me.data)
-            flash('Вы успешно авторизовались.')
+        if not user:
+            flash('Пользователь с таким логином не найден.')
 
-            return redirect(url_for('user.index')) # необходимо добавить главную страницу           
-        flash('Неправильный имя пользователя или пароль.')
+            return redirect(url_for('user.log_in'))
 
-        return redirect(url_for('user.log_in'))
+        if not user.check_password(form.password.data):
+            flash('Не корректно введен пароль.')
+
+            return redirect(url_for('user.log_in'))
+
+        login_user(user, remember=form.remember_me.data)
+        flash('Вы успешно авторизовались.')
+
+        return redirect(url_for('user.index')) # необходимо добавить главную страницу           
         
 @blueprint.route('/create/process-create-user', methods=['POST'])
 def process_create_user():
