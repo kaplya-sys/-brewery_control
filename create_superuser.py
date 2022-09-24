@@ -1,4 +1,5 @@
 from getpass import getpass
+from webapp.user.enums import Profession
 import sys
 
 from webapp import create_app
@@ -22,7 +23,7 @@ with app.app_context():
         print('Пароли не совпадают.')
         sys.exit(0)
 
-    new_user = User(username=username, employee_position='Пивовар')
+    new_user = User(username=username, employee_position=Profession.Brewer.value)
     new_user.set_password(password)
     db.session.add(new_user)
     db.session.commit()

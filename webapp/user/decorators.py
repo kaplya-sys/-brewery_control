@@ -13,7 +13,7 @@ def superuser_required(func):
             return current_app.login_manager.unauthorized()
         elif not current_user.is_superuser:
             flash('Эта страница доступна только админам')
-            return redirect(url_for('user.index'))  # необходимо добавить главную страницу  
+            return redirect(url_for('user.index'))
         return func(*args, **kwargs)
     
     return decorated_view

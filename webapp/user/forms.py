@@ -1,26 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField
+from webapp.user.enums import Profession
+from wtforms import StringField, PasswordField, SubmitField, SelectField
 from wtforms.validators import DataRequired, EqualTo
-
-class LoginForm(FlaskForm):
-    username = StringField(
-        'Имя пользователя:',
-        validators=[DataRequired()],
-        render_kw={'class': 'form-control'}
-        )
-    password = PasswordField(
-        'Пароль:',
-        validators=[DataRequired()],
-        render_kw={'class': 'form-control'}
-        )
-    remember_me = BooleanField(
-        'Запомнить меня',
-        render_kw={'class': 'form-check-input'}
-        )
-    submit = SubmitField(
-        'Войти',
-        render_kw={'class': 'btn btn-success'}
-        )
     
 class CreateUserForm(FlaskForm):
     username = StringField(
@@ -54,8 +35,8 @@ class CreateUserForm(FlaskForm):
     position = SelectField(
         'Должность:',
         choices=[
-            ('Пивовар', 'Пивовар'),
-            ('Помощник', 'Помощник')
+            (Profession.Brewer.value, 'Пивовар'),
+            (Profession.Assistant.value, 'Помощник')
             ],
         render_kw={'class': 'form-select'}
         )
