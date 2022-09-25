@@ -23,7 +23,7 @@ with app.app_context():
         print('Пароли не совпадают.')
         sys.exit(0)
 
-    new_user = User(username=username, employee_position=Profession.Brewer.value)
+    new_user = User(username=username, employee_position=Profession.brewer)
     new_user.set_password(password)
     db.session.add(new_user)
     db.session.commit()

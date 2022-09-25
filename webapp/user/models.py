@@ -19,7 +19,7 @@ class User(db.Model, UserMixin):
         
     @property
     def is_superuser(self):
-        return self.employee_position == Profession.Brewer.value
+        return self.employee_position == Profession.brewer
     
     def __repr__(self):
         return f"User {self.id} {self.username}"
