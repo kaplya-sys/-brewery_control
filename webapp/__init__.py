@@ -4,11 +4,13 @@ from flask_migrate import Migrate
 from webapp.db import db
 from webapp.user.models import User
 from webapp.user.views import blueprint as user_blueprint
+from webapp.tank.views import blueprint as tank_blueprint
 
 def create_app():
     app = Flask(__name__)
     app.config.from_pyfile('config.py')
     app.register_blueprint(user_blueprint)
+    app.register_blueprint(tank_blueprint)
 
     db.init_app(app)
     migrate = Migrate(app, db)
