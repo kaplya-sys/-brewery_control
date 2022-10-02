@@ -8,10 +8,10 @@ class Profession(Enum):
     def get_translated_value(self):
         translated_value = None
 
-        if self == self.brewer:
+        if self == Profession.brewer:
             translated_value = 'Пивовар'
-        elif self == self.assistant:
+        elif self == Profession.assistant:
             translated_value = 'Ассистент'
-        elif self == self.admin:
+        elif self == Profession.admin:
             translated_value = 'Админ'
         return translated_value

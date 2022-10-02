@@ -1,5 +1,5 @@
 from flask import Blueprint, flash, render_template, redirect, url_for
-from flask_login import current_user
+from flask_login import current_user, login_required
 
 from webapp.db import db
 from webapp.yeasts.forms import YeastsForm
@@ -8,14 +8,12 @@ from webapp.yeasts.models import Yeasts
 blueprint = Blueprint('yeasts', __name__, url_prefix='/components')
 
 @blueprint.route('/add-yeasts')
+@login_required
 def add_yeasts():
-    if current_user.is_authenticated:
-        page_title = 'Дрожжи'
-        yeasts_form = YeastsForm()
+    page_title = 'Дрожжи'
+    yeasts_form = YeastsForm()
 
-        return render_template('yeasts/index.html', title=page_title, form=yeasts_form)
-
-    return redirect(url_for('user.login'))
+    return render_template('yeasts/index.html', title=page_title, form=yeasts_form)
 
 @blueprint.route('/process-create-add-yeasts', methods=['POST'])
 def process_create_add_yeasts():
