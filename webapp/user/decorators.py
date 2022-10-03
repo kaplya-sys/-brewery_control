@@ -1,5 +1,5 @@
 from functools import wraps
-from flask import current_app, flash, request, redirect, url_for
+from flask import current_app, flash, request, redirect, url_for, render_template
 from flask_login import config, current_user
 
 def superuser_required(func):
@@ -17,3 +17,13 @@ def superuser_required(func):
         return func(*args, **kwargs)
     
     return decorated_view
+
+def brewer_required(func):
+    @wraps(func)
+    def decorated_function(*args, **kwargs):
+        if not current_user.is_brewer:
+            flash('Нет прав для данного действия')
+            return render_template('base.html', title='Нет прав для данного действия')
+        return func(*args, **kwargs)
+    
+    return decorated_function
