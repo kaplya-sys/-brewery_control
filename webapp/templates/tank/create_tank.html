@@ -2,37 +2,23 @@
 
 {% block content %}
 {% if current_user.is_authenticated %}
-<div class="row justify-content-center">
-    <div class="col-4">
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <div class="alert alert-warning" role="alert">
-            {% for message in messages %}
-            {{ message }}<br>
-            {% endfor %}
-        </div>
-        {% endif %}
-        {% endwith %}
-        <form action="{{ url_for('tank.process_create_tank') }}" method="POST">
-            {{ form.hidden_tag() }}
-            <div class="form-group">
-                {{ form.number.label }}
-                {{ form.number() }}
-            </div>
-            <div class="form-group">
-                {{ form.title.label }}
-                {{ form.title() }}
-            </div>
-            <div class="form-group">
-                {{ form.yeast.label }}
-                {{ form.yeast() }}
-            </div>
- 
-            {{ form.submit }}
-        </form>
-    </div>
+    <div class="row justify-content-center">
+        <div class="col-4">
 
-</div>
+            <form action="{{ url_for('tank.process_create_tank') }}" method="POST">
+                {{ form.hidden_tag() }}
+                <div class="form-group">
+                    {{ form.number.label }}
+                    {{ form.number() }}
+                </div>
+                <div class="form-group">
+                    {{ form.title.label }}
+                    {{ form.title() }}
+                </div>
+                {{ form.submit }}
+            </form>
+        </div>
+    </div>
 {% else %}
 <div class="container">
     <br>
