@@ -15,7 +15,6 @@ class Tank(db.Model):
     beer_grooving = db.Column(db.Boolean, default=False)
     cooling = db.Column(db.Boolean, default=False)
 
-
     def __repr__(self) -> str:
         return f'#{self.number} - {self.title}'
 
@@ -30,6 +29,7 @@ class Measuring(db.Model):
     tank_id = db.Column(
         db.Integer,
         db.ForeignKey('tank.id', ondelete='CASCADE'), index=True)
+
     number_tank = relationship('Tank', backref='tank')
 
     def __repr__(self) -> str:

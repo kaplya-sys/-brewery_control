@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if current_user.is_authenticated %}
+<div class="row justify-content-center">
+    <div class="col-4">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="alert alert-warning" role="alert">
+            {% for message in messages %}
+            {{ message }}<br>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+        <form action="{{ url_for('tank.process_measuring') }}" method="POST">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.tank_id.label }}
+                {{ form.tank_id() }}
+            </div>
+            <div class="form-group">
+                {{ form.temperature.label }}
+                {{ form.temperature() }}
+            </div>
+            <div class="form-group">
+                {{ form.density.label }}
+                {{ form.density() }}
+            </div>
+            <div class="form-group">
+                {{ form.pressure.label }}
+                {{ form.pressure() }}
+            </div>
+            <div class="form-group">
+                {{ form.comment.label }}
+                {{ form.comment() }}
+            </div>
+            {{ form.submit }}
+        </form>
+    </div>
+
+</div>
+{% else %}
+<div class="container">
+    <br>
+    <h1 class="text-center">Страница доступна только для авторизованного пользователя</h1>
+    <br>
+    <center>
+        <a class="btn btn-success btn-lg" href="{{ url_for('user.login') }}" role="button">Войти</a>
+    </center>
+</div>
+{% endif %}
+{% endblock %}

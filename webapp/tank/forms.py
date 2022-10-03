@@ -1,12 +1,14 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, HiddenField, SubmitField, SelectField, IntegerField, BooleanField
+from wtforms import StringField, SubmitField, SelectField, IntegerField, BooleanField, FloatField, HiddenField
 from wtforms.validators import DataRequired, EqualTo
 
+from webapp.db import db
 from webapp.tank.enums import TitleBeer
+from webapp.tank.models import Tank
 
 
 class CreateTankForm(FlaskForm):
-    number = IntegerField('Номер ЦКТ',render_kw={"class": "form-control"})
+    number = IntegerField('Номер ЦКТ', validators=[DataRequired()],render_kw={"class": "form-control"})
     title = SelectField('Названте сорта', choices=[
         (TitleBeer.kellerbier.value, 'Kellerbier'),
         (TitleBeer.dunkelbier.value, 'Dunkelbier'),
@@ -22,4 +24,14 @@ class CreateTankForm(FlaskForm):
     actual_volume = IntegerField('Объём', render_kw={"class": "form-control"})
     beer_grooving = BooleanField('Шпунт', default=False, render_kw={"class": "form-control"})
     cooling = BooleanField('Охлаждение', default=False, render_kw={"class": "form-control"})
+    submit = SubmitField('Добавить', render_kw={"class": "btn btn-primary"})
+
+
+class MeasuringForm(FlaskForm):
+    tank_id = SelectField('Номер ЦКТ', validators=[DataRequired()], render_kw={"class": "form-control"})
+    temperature = FloatField('Температура', validators=[DataRequired()], render_kw={"class": "form-control"})
+    density = FloatField('Плотность', validators=[DataRequired()], render_kw={"class": "form-control"})
+    pressure = FloatField('Давление', validators=[DataRequired()], render_kw={"class": "form-control"})
+    comment = StringField('Комментарии', render_kw={"class": "form-control"})
+    # tank_id = SelectField('Номер ЦКТ', choices=[Tank.query.all()], render_kw={"class": "form-control"})
     submit = SubmitField('Добавить', render_kw={"class": "btn btn-primary"})
