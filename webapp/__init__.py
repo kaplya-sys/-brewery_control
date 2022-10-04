@@ -15,7 +15,7 @@ def create_app():
     app.register_blueprint(yeasts_blueprint)
 
     db.init_app(app)
-    migrate = Migrate(app, db)
+    migrate = Migrate(app, db, compare_type = True)
 
     login_manager = LoginManager()
     login_manager.init_app(app)

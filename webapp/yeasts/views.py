@@ -16,6 +16,7 @@ def add_yeasts():
     return render_template('yeasts/index.html', title=page_title, form=yeasts_form)
 
 @blueprint.route('/process-create-add-yeasts', methods=['POST'])
+@login_required
 def process_create_add_yeasts():
     form = YeastsForm()
 
