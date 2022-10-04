@@ -14,8 +14,6 @@ with app.app_context():
         print('Пользователь с таким именем существует.')
         sys.exit(0)
 
-    #firstname = input('ВВедите Имя: ') 
-    #lastname = input('ВВедите Фамилию: ')
     password = getpass('Введите пароль: ')
     confirm_password = getpass('Повторите пароль: ')
 
@@ -23,7 +21,7 @@ with app.app_context():
         print('Пароли не совпадают.')
         sys.exit(0)
 
-    new_user = User(username=username, employee_position=Profession.brewer)
+    new_user = User(username=username, employee_position=Profession.admin)
     new_user.set_password(password)
     db.session.add(new_user)
     db.session.commit()
