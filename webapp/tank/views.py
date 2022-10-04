@@ -1,4 +1,3 @@
-from datetime import datetime
 from sqlalchemy import exc
 from flask import Blueprint ,flash, render_template, redirect, url_for
 
@@ -39,22 +38,22 @@ def process_create_tank():
 
 @blueprint.route('/measuring')
 def measuring_tank():
-    page_title = 'Внести измерения'
-    create_form = MeasuringForm()
+        page_title = 'Внести измерения'
+        create_form = MeasuringForm()
+        create_form.tank_id.choices = [(i.id, i) for i in Tank.query.all()]
 
-    return render_template('tank/measuting.html', title=page_title, form=create_form)
+        return render_template('tank/measuring.html', title=page_title, form=create_form)
 
 
 @blueprint.route('/process-measuring', methods=['POST'])
 def process_measuring():
     form = MeasuringForm()
-
+    form.tank_id.choices = [i.id for i in Tank.query.all()]
     if form.validate_on_submit():
         new_measuring = Measuring(
             temperature = form.temperature.data,
             density = form.density.data,
             pressure = form.pressure.data,
-            # create_at = datetime.now(),
             comment = form.comment.data,
             tank_id = form.tank_id.data
         )

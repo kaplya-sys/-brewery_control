@@ -28,10 +28,9 @@ class CreateTankForm(FlaskForm):
 
 
 class MeasuringForm(FlaskForm):
-    tank_id = SelectField('Номер ЦКТ', validators=[DataRequired()], render_kw={"class": "form-control"})
+    tank_id = SelectField('Номер ЦКТ',validators=[DataRequired()], render_kw={"class": "form-control"})
     temperature = FloatField('Температура', validators=[DataRequired()], render_kw={"class": "form-control"})
     density = FloatField('Плотность', validators=[DataRequired()], render_kw={"class": "form-control"})
     pressure = FloatField('Давление', validators=[DataRequired()], render_kw={"class": "form-control"})
     comment = StringField('Комментарии', render_kw={"class": "form-control"})
-    # tank_id = SelectField('Номер ЦКТ', choices=[Tank.query.all()], render_kw={"class": "form-control"})
     submit = SubmitField('Добавить', render_kw={"class": "btn btn-primary"})

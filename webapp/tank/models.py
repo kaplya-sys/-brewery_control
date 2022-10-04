@@ -10,7 +10,6 @@ class Tank(db.Model):
     number = db.Column(db.Integer(), nullable=False, unique=True)
     title = db.Column(db.Enum(TitleBeer), nullable=False)
     yeast = db.Column(db.String(50), nullable=False)
-    # expected_volume = db.Column(db.Integer)
     actual_volume = db.Column(db.Integer)
     beer_grooving = db.Column(db.Boolean, default=False)
     cooling = db.Column(db.Boolean, default=False)
