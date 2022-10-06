@@ -40,7 +40,6 @@ def process_create_tank():
 def measuring_tank():
         page_title = 'Внести измерения'
         create_form = MeasuringForm()
-        create_form.tank_id.choices = [(i.id, i) for i in Tank.query.all()]
 
         return render_template('tank/measuring.html', title=page_title, form=create_form)
 
@@ -48,7 +47,6 @@ def measuring_tank():
 @blueprint.route('/process-measuring', methods=['POST'])
 def process_measuring():
     form = MeasuringForm()
-    form.tank_id.choices = [i.id for i in Tank.query.all()]
     if form.validate_on_submit():
         new_measuring = Measuring(
             temperature = form.temperature.data,

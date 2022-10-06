@@ -28,6 +28,11 @@ class CreateTankForm(FlaskForm):
 
 
 class MeasuringForm(FlaskForm):
+
+    def __init__(self, *args, **kwargs):
+        super(MeasuringForm, self).__init__(*args, **kwargs)
+        self.tank_id.choices = [(i.id, i) for i in Tank.query.all()]
+
     tank_id = SelectField('Номер ЦКТ',validators=[DataRequired()], render_kw={"class": "form-control"})
     temperature = FloatField('Температура', validators=[DataRequired()], render_kw={"class": "form-control"})
     density = FloatField('Плотность', validators=[DataRequired()], render_kw={"class": "form-control"})
