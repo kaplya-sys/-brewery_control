@@ -10,10 +10,16 @@ class Tank(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     number = db.Column(db.Integer(), nullable=False, unique=True)
     title = db.Column(db.Enum(TitleBeer), nullable=False)
+    yeasts_id = db.Column(
+        db.Integer,
+        db.ForeignKey('yeasts.id'), index=True)
+    expected_volume = db.Column(db.Integer, nullable=False)
     actual_volume = db.Column(db.Integer, default=0)
     beer_grooving = db.Column(db.Boolean, default=False)
     cooling = db.Column(db.Boolean, default=False)
-
+    brew_number_first = db.Column(db.Integer, nullable=False)
+    brew_number_last = db.Column(db.Integer, nullable=False)
+    yeasts = relationship('Yeasts', backref='tank')
 
     def __repr__(self) -> str:
         return f'#{self.number} - {self.title}'
