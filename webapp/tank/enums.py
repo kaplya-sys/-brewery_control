@@ -11,7 +11,6 @@ class TitleBeer(Enum):
     traditional_wheat = 'traditional_wheat'
     cider = 'cider'
 
-<<<<<<< HEAD
 
     def product_name(self):
         product = ''
@@ -32,20 +31,3 @@ class TitleBeer(Enum):
         elif self == TitleBeer.cider:
             product = 'Пивной напиток',
         return product
-=======
-    def __init__(self, variable_name):
-        self.variable_name = variable_name
-
-    def product_name(self):
-        product_names = {
-            'kellerbier': 'Kellerbier',
-            'dunkelbier': 'Dunkelbier',
-            'bropils': 'Bro Pils',
-            'wheatbeer': 'Пшеничное',
-            'traditional_dark': 'Традиционное Темное',
-            'traditional_light': 'Традиционное Светлое',
-            'traditional_wheat': 'Традиционное Пшеничное',
-            'cider': 'Пивной напиток',
-            }
-        return product_names[self.variable_name]
->>>>>>> 2873885f857157d88557f4aacaca589065fe8c35
