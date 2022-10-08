@@ -4,6 +4,7 @@ from flask_migrate import Migrate
 from webapp.db import db
 from webapp.user.models import User
 from webapp.user.views import blueprint as user_blueprint
+from webapp.tank.views import blueprint as tank_blueprint
 from webapp.admin.views import blueprint as admin_blueprint
 from webapp.yeasts.views import blueprint as yeasts_blueprint
 
@@ -13,6 +14,7 @@ def create_app():
     app.register_blueprint(user_blueprint)
     app.register_blueprint(admin_blueprint)
     app.register_blueprint(yeasts_blueprint)
+    app.register_blueprint(tank_blueprint)
 
     db.init_app(app)
     migrate = Migrate(app, db, compare_type = True)
