@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="ru">
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -14,8 +14,21 @@
     {% include 'navbar.html' %}
     <div class="container">
       <h1 class="text-center">{{ title }}</h1>
+      <div class="row justify-content-center">
+        <div class="col-4">
+          {% with messages = get_flashed_messages() %}
+          {% if messages %}
+          <div class="alert alert-warning" role="alert">
+            {% for message in messages %}
+            {{ message }}<br>
+            {% endfor %}
+          </div>
+          {% endif %}
+          {% endwith %}
+        </div>
+      </div>
       {% block content %}{% endblock %}
-  </div>
+    </div>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

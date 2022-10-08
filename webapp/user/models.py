@@ -4,6 +4,8 @@ from flask_login import UserMixin
 from werkzeug.security import check_password_hash, generate_password_hash
 
 class User(db.Model, UserMixin):
+    __tablename__ = 'users'
+
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), index=True, nullable=False, unique=True)
     firstname = db.Column(db.String(50), nullable=True)
@@ -19,7 +21,11 @@ class User(db.Model, UserMixin):
         
     @property
     def is_superuser(self):
-        return self.employee_position == Profession.brewer
+        return self.employee_position == Profession.admin
     
+    @property
+    def is_brewer(self):
+        return self.employee_position == Profession.brewer
+
     def __repr__(self):
         return f"User {self.id} {self.username}"

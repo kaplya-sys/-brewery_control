@@ -1,13 +1,18 @@
-from sqlalchemy import exc
 from flask import Blueprint ,flash, render_template, redirect, url_for
 
 from webapp.db import db
 from webapp.tank.forms import CreateTankForm, MeasuringForm
 from webapp.tank.models import Tank, Measuring
+from webapp.tank.utils import number_of_brews, expected_volume, colling_now_check, beer_grooving_check
+from webapp.user.decorators import brewer_required
 
 blueprint = Blueprint('tank', __name__, url_prefix='/tank')
 
+
+
+
 @blueprint.route('/create-tank')
+@brewer_required
 def create_tank():
     page_title = 'Добавить ЦКТ'
     create_form = CreateTankForm()
@@ -15,23 +20,27 @@ def create_tank():
     return render_template('tank/create_tank.html', title=page_title, form=create_form)
 
 @blueprint.route('/process-create_tank', methods=['POST'])
+@brewer_required
 def process_create_tank():
     form = CreateTankForm()
 
     if form.validate_on_submit:
-            new_tank = Tank(
+        if Tank.query.filter(Tank.number == form.number.data).count():
+            flash('Данный ЦКТ уже занят')
+            return redirect(url_for('tank.create_tank'))
+        previous_brew_number = Tank.query.order_by(Tank.id.desc()).first().brew_number_last
+        numbers_brew = number_of_brews(form.number.data)
+
+        new_tank = Tank(
             number=form.number.data,
             title=form.title.data,
-            yeast=form.yeast.data
-            )
-            try:
-                db.session.add(new_tank)
-                db.session.commit()
-                flash('ЦКТ добавлен')
-            except exc.IntegrityError:
-                db.session().rollback()
-                flash('Данный ЦКТ уже занят')
-                return redirect(url_for('tank.create_tank'))
+            expected_volume= numbers_brew * expected_volume(numbers_brew),
+            brew_number_first = previous_brew_number + 1,
+            brew_number_last = previous_brew_number + numbers_brew,
+            )   
+        db.session.add(new_tank)
+        db.session.commit()
+        flash('ЦКТ добавлен')
 
     return render_template('base.html', title='add tank')
 
@@ -55,6 +64,13 @@ def process_measuring():
             comment = form.comment.data,
             tank_id = form.tank_id.data
         )
+        tank = Tank.query.get(new_measuring.tank_id)
+        title_tank = tank.title.name
+        if not tank.cooling:
+            if not tank.beer_grooving:
+                tank.beer_grooving = beer_grooving_check(title_tank, new_measuring.density)
+            tank.cooling = colling_now_check(title_tank, new_measuring.density)
+            
         db.session.add(new_measuring)
         db.session.commit()
         flash('Данные успешно заполнены')
