@@ -16,7 +16,7 @@ def planned_expected_volume(number_of_brews):
 
     volume = 1200
     if number_of_brews in range(1, 4):
-        volume == 1050
+        volume = 1050
     return volume
  
 

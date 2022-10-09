@@ -17,19 +17,19 @@ class Tank(db.Model):
     actual_volume = db.Column(db.Integer, default=0)
     beer_grooving = db.Column(db.Boolean, default=False)
     cooling = db.Column(db.Boolean, default=False)
-    brew_number_first = db.Column(db.Integer, nullable=False)
-    brew_number_last = db.Column(db.Integer, nullable=False)
+    brew_number_first = db.Column(db.Integer, nullable=False, default=1)
+    brew_number_last = db.Column(db.Integer, nullable=False, default=1)
     yeasts = relationship('Yeasts', backref='tanks')
 
     def __repr__(self) -> str:
-        return f'#{self.number} - {str(self.title.name).title()}'
+        return f'#{self.number} - {TitleBeer.product_name(self.title)}'
 
 
 class Measuring(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     temperature = db.Column(db.Float, nullable=False)
     density = db.Column(db.Float, nullable=False)
-    pressure = db.Column(db.Float, nullable=False, default=0)
+    pressure = db.Column(db.Float, default=0)
     create_at = db.Column(db.DateTime, nullable=False, default=datetime.now().strftime("%d-%m-%Y / %H:%M"))
     comment = db.Column(db.String(300))
     tank_id = db.Column(

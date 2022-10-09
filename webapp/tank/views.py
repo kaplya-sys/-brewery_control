@@ -28,13 +28,16 @@ def process_create_tank():
         if Tank.query.filter(Tank.number == form.number.data).count():
             flash('Данный ЦКТ уже занят')
             return redirect(url_for('tank.create_tank'))
-        previous_brew_number = Tank.query.order_by(Tank.id.desc()).first().brew_number_last
+        if not Tank.query.get(1):
+            previous_brew_number = 1
+        else:
+            previous_brew_number = Tank.query.order_by(Tank.id.desc()).first().brew_number_last
         numbers_brew = number_of_brews_for_full_tank(form.number.data)
 
         new_tank = Tank(
             number=form.number.data,
             title=form.title.data,
-            expected_volume= numbers_brew * planned_expected_volume(numbers_brew),
+            expected_volume= numbers_brew * planned_expected_volume(form.number.data),
             brew_number_first = previous_brew_number + 1,
             brew_number_last = previous_brew_number + numbers_brew,
             )   
@@ -56,6 +59,7 @@ def measuring_tank():
 @blueprint.route('/process-measuring', methods=['POST'])
 def process_measuring():
     form = MeasuringForm()
+    print(form.pressure.data)
     if form.validate_on_submit():
         new_measuring = Measuring(
             temperature = form.temperature.data,
@@ -76,5 +80,6 @@ def process_measuring():
         flash('Данные успешно заполнены')
         return redirect(url_for('tank.measuring_tank'))
     
-    flash(form.errors)
+    for field, error in form.errors:
+        flash(field, error)
     return redirect(url_for('tank.measuring_tank'))
