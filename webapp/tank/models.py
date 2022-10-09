@@ -19,7 +19,7 @@ class Tank(db.Model):
     cooling = db.Column(db.Boolean, default=False)
     brew_number_first = db.Column(db.Integer, nullable=False)
     brew_number_last = db.Column(db.Integer, nullable=False)
-    yeasts = relationship('Yeasts', backref='tank')
+    yeasts = relationship('Yeasts', backref='tanks')
 
     def __repr__(self) -> str:
         return f'#{self.number} - {str(self.title.name).title()}'

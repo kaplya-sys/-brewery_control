@@ -9,25 +9,11 @@ from webapp.tank.models import Tank
 
 class CreateTankForm(FlaskForm):
 
-    def __init__(self, *args, **kwargs):
-        super(CreateTankForm, self).__init__(*args, **kwargs)
-        self.title.choices = [(i.value, TitleBeer.product_name(i)) for i in TitleBeer]
-
     number = IntegerField('Номер ЦКТ', validators=[DataRequired()],render_kw={"class": "form-control"})
     title = SelectField('Названте сорта',
          validate_choice=[DataRequired()], render_kw={"class": "form-control"})
     submit = SubmitField('Добавить', render_kw={"class": "btn btn-primary"})
 
-
-class MeasuringForm(FlaskForm):
-
     def __init__(self, *args, **kwargs):
-        super(MeasuringForm, self).__init__(*args, **kwargs)
-        self.tank_id.choices = [(i.id, i) for i in Tank.query.all()]
-
-    tank_id = SelectField('Номер ЦКТ',validators=[DataRequired()], render_kw={"class": "form-control"})
-    temperature = FloatField('Температура', validators=[DataRequired()], render_kw={"class": "form-control"})
-    density = FloatField('Плотность', validators=[DataRequired()], render_kw={"class": "form-control"})
-    pressure = FloatField('Давление', validators=[DataRequired()], render_kw={"class": "form-control"})
-    comment = StringField('Комментарии', render_kw={"class": "form-control"})
-    submit = SubmitField('Добавить', render_kw={"class": "btn btn-primary"})
+        super(CreateTankForm, self).__init__(*args, **kwargs)
+        self.title.choices = [(i.value, TitleBeer.product_name(i)) for i in TitleBeer]
