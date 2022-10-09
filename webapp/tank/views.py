@@ -3,7 +3,7 @@ from flask import Blueprint ,flash, render_template, redirect, url_for
 from webapp.db import db
 from webapp.tank.forms import CreateTankForm, MeasuringForm
 from webapp.tank.models import Tank, Measuring
-from webapp.tank.utils import number_of_brews, expected_volume, colling_now_check, beer_grooving_check
+from webapp.tank.utils import number_of_brews_for_full_tank, planned_expected_volume, cooling_beer_check, beer_grooving_check
 from webapp.user.decorators import brewer_required
 
 blueprint = Blueprint('tank', __name__, url_prefix='/tank')
@@ -29,12 +29,12 @@ def process_create_tank():
             flash('Данный ЦКТ уже занят')
             return redirect(url_for('tank.create_tank'))
         previous_brew_number = Tank.query.order_by(Tank.id.desc()).first().brew_number_last
-        numbers_brew = number_of_brews(form.number.data)
+        numbers_brew = number_of_brews_for_full_tank(form.number.data)
 
         new_tank = Tank(
             number=form.number.data,
             title=form.title.data,
-            expected_volume= numbers_brew * expected_volume(numbers_brew),
+            expected_volume= numbers_brew * planned_expected_volume(numbers_brew),
             brew_number_first = previous_brew_number + 1,
             brew_number_last = previous_brew_number + numbers_brew,
             )   
@@ -69,12 +69,12 @@ def process_measuring():
         if not tank.cooling:
             if not tank.beer_grooving:
                 tank.beer_grooving = beer_grooving_check(title_tank, new_measuring.density)
-            tank.cooling = colling_now_check(title_tank, new_measuring.density)
+            tank.cooling = cooling_beer_check(title_tank, new_measuring.density)
             
         db.session.add(new_measuring)
         db.session.commit()
         flash('Данные успешно заполнены')
         return redirect(url_for('tank.measuring_tank'))
     
-    flash('Что-то пошло не так')
+    flash(form.errors)
     return redirect(url_for('tank.measuring_tank'))

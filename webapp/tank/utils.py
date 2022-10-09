@@ -52,21 +52,9 @@ def beer_grooving_check(title_beer, density):
     return False
 
 
-def colling_now_check(title_beer, density):
+def cooling_beer_check(title_beer, density):
     """checking for the need for beer cooling"""
 
     if density <= need_density_for_cooling(title_beer):
         return True
     return False
-
-
-# def fermentation_stage(title_beer, density, beer_grooving, colling_now):
-#     """fermentation stage check"""
-
-#     if colling_now:
-#         return colling_now 
-#     else:
-#         if beer_grooving:
-#             return colling_now_check(title_beer, density)
-#         else:
-#             return beer_grooving_check(title_beer, density)
