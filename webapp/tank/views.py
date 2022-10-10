@@ -3,7 +3,7 @@ from flask import Blueprint ,flash, render_template, redirect, url_for
 from webapp.db import db
 from webapp.tank.forms import CreateTankForm, MeasuringForm
 from webapp.tank.models import Tank, Measuring
-from webapp.tank.utils import number_of_brews_for_full_tank, planned_expected_volume, cooling_beer_check, beer_grooving_check
+from webapp.tank.utils import number_of_brews_for_full_tank, planned_expected_volume, is_beer_need_cooling, is_beer_need_grooving
 from webapp.user.decorators import brewer_required
 
 blueprint = Blueprint('tank', __name__, url_prefix='/tank')
@@ -28,8 +28,8 @@ def process_create_tank():
         if Tank.query.filter(Tank.number == form.number.data).count():
             flash('Данный ЦКТ уже занят')
             return redirect(url_for('tank.create_tank'))
-        if not Tank.query.get(1):
-            previous_brew_number = 1
+        if not Tank.query.count():
+            previous_brew_number = 0
         else:
             previous_brew_number = Tank.query.order_by(Tank.id.desc()).first().brew_number_last
         numbers_brew = number_of_brews_for_full_tank(form.number.data)
@@ -59,7 +59,6 @@ def measuring_tank():
 @blueprint.route('/process-measuring', methods=['POST'])
 def process_measuring():
     form = MeasuringForm()
-    print(form.pressure.data)
     if form.validate_on_submit():
         new_measuring = Measuring(
             temperature = form.temperature.data,
@@ -69,17 +68,17 @@ def process_measuring():
             tank_id = form.tank_id.data
         )
         tank = Tank.query.get(new_measuring.tank_id)
-        title_tank = tank.title.name
+        title_tank = tank.title
         if not tank.cooling:
             if not tank.beer_grooving:
-                tank.beer_grooving = beer_grooving_check(title_tank, new_measuring.density)
-            tank.cooling = cooling_beer_check(title_tank, new_measuring.density)
+                tank.beer_grooving = is_beer_need_grooving(title_tank, new_measuring.density)
+            tank.cooling = is_beer_need_cooling(title_tank, new_measuring.density)
             
         db.session.add(new_measuring)
         db.session.commit()
         flash('Данные успешно заполнены')
         return redirect(url_for('tank.measuring_tank'))
     
-    for field, error in form.errors:
-        flash(field, error)
+    for field, error in form.errors.items():
+        flash(f'{field} is {error[0]}')
     return redirect(url_for('tank.measuring_tank'))

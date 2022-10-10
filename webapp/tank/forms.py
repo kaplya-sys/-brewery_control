@@ -1,3 +1,4 @@
+from email.policy import default
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, SelectField, IntegerField, FloatField
 from wtforms.validators import DataRequired
@@ -23,10 +24,10 @@ class MeasuringForm(FlaskForm):
     tank_id = SelectField('Номер ЦКТ',validators=[DataRequired()], render_kw={"class": "form-control"})
     temperature = FloatField('Температура', validators=[DataRequired()], render_kw={"class": "form-control"})
     density = FloatField('Плотность', validators=[DataRequired()], render_kw={"class": "form-control"})
-    pressure = FloatField('Давление', render_kw={"class": "form-control"})
+    pressure = FloatField('Давление', default=0 ,render_kw={"class": "form-control"})
     comment = StringField('Комментарии', render_kw={"class": "form-control"})
     submit = SubmitField('Добавить', render_kw={"class": "btn btn-primary"})
 
     def __init__(self, *args, **kwargs):
         super(MeasuringForm, self).__init__(*args, **kwargs)
-        self.tank_id.choices = [(i.id, i) for i in Tank.query.all()]
+        self.tank_id.choices = [(tank.id, tank) for tank in Tank.query.all()]

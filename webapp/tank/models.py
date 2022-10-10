@@ -22,7 +22,7 @@ class Tank(db.Model):
     yeasts = relationship('Yeasts', backref='tanks')
 
     def __repr__(self) -> str:
-        return f'#{self.number} - {TitleBeer.product_name(self.title)}'
+        return f'#{self.number} - {self.title.product_name()}'
 
 
 class Measuring(db.Model):
@@ -30,7 +30,7 @@ class Measuring(db.Model):
     temperature = db.Column(db.Float, nullable=False)
     density = db.Column(db.Float, nullable=False)
     pressure = db.Column(db.Float, default=0)
-    create_at = db.Column(db.DateTime, nullable=False, default=datetime.now().strftime("%d-%m-%Y / %H:%M"))
+    create_at = db.Column(db.DateTime, nullable=False, default=datetime.now())
     comment = db.Column(db.String(300))
     tank_id = db.Column(
         db.Integer,
