@@ -22,7 +22,7 @@ def planned_expected_volume(number_of_brews):
     return volume
  
 
-def checking_density_for_grooving(title_beer):
+def get_density_for_grooving(title_beer):
     """returns the required density for beer grooving"""
 
     if title_beer in [TitleBeer.kellerbier, TitleBeer.dunkelbier, TitleBeer.wheatbeer]:
@@ -33,7 +33,7 @@ def checking_density_for_grooving(title_beer):
         return 6.0
 
 
-def checking_density_for_cooling(title_beer):
+def get_density_for_cooling(title_beer):
     """returns the required density for beer cooling"""
 
     if title_beer in [TitleBeer.kellerbier, TitleBeer.dunkelbier, TitleBeer.traditional_wheat]:
@@ -49,7 +49,7 @@ def checking_density_for_cooling(title_beer):
 def is_beer_need_grooving(title_beer, density):
     """checking for the need for beer grooving"""
 
-    if density <= checking_density_for_grooving(title_beer):
+    if density <= get_density_for_grooving(title_beer):
         return True
     return False
 
@@ -57,6 +57,6 @@ def is_beer_need_grooving(title_beer, density):
 def is_beer_need_cooling(title_beer, density):
     """checking for the need for beer cooling"""
 
-    if density <= checking_density_for_cooling(title_beer):
+    if density <= get_density_for_cooling(title_beer):
         return True
     return False

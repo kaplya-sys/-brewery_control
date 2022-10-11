@@ -1,4 +1,3 @@
-from email.policy import default
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, SelectField, IntegerField, FloatField
 from wtforms.validators import DataRequired
@@ -30,4 +29,4 @@ class MeasuringForm(FlaskForm):
 
     def __init__(self, *args, **kwargs):
         super(MeasuringForm, self).__init__(*args, **kwargs)
-        self.tank_id.choices = [(tank.id, tank) for tank in Tank.query.all()]
+        self.tank_id.choices = [(tank.id, f'{tank.titile} {tank.number}') for tank in Tank.query.all()]
