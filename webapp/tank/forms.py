@@ -29,4 +29,4 @@ class MeasuringForm(FlaskForm):
 
     def __init__(self, *args, **kwargs):
         super(MeasuringForm, self).__init__(*args, **kwargs)
-        self.tank_id.choices = [(tank.id, f'{tank.titile} {tank.number}') for tank in Tank.query.all()]
+        self.tank_id.choices = [(tank.id, f'{tank.number} - {tank.title.product_name()}') for tank in Tank.query.all()]

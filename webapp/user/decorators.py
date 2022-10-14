@@ -21,10 +21,12 @@ def superuser_required(func):
 def brewer_required(func):
     @wraps(func)
     def decorated_function(*args, **kwargs):
-        if current_user.is_brewer or current_user.is_superuser:
-            return func(*args, **kwargs)
+        if current_user.is_authenticated:
+            if current_user.is_brewer or current_user.is_superuser:
+                return func(*args, **kwargs)
+            else:
+                flash('Нет прав для данного действия')
+                return render_template('base.html', title='Нет прав для данного действия')
         else:
-            flash('Нет прав для данного действия')
-            return render_template('base.html', title='Нет прав для данного действия')
-    
+            return redirect(url_for('user.login'))
     return decorated_function
