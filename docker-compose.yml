@@ -4,7 +4,7 @@ services:
         container_name: webbrew
         restart: always
         build: .
-        command: bash 'run.sh'
+        command: bash 'rundocker.sh'
         volumes:
             - .:/brewery
         ports:
