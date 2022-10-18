@@ -12,6 +12,7 @@ from webapp.tank.utils import (
     create_diagrams,
     date_format,
     )
+from webapp.yeasts.models import Yeasts
 from webapp.user.decorators import brewer_required
 
 blueprint = Blueprint('tank', __name__, url_prefix='/tank')
@@ -37,6 +38,16 @@ def view_tanks():
     page_title = 'Активные ЦКТ'
   
     return render_template('tank/tanks_view.html', title=page_title, diagrams=diagrams)
+
+@blueprint.route('/<int:tank_id>')
+@login_required
+def view_tank_info(tank_id):
+    tank = Tank.query.filter(Tank.id == tank_id).first()
+    yeats = Yeasts.query.filter(Yeasts.id == tank.yeasts_id).first()
+    measuring = Measuring.query.order_by(Measuring.create_at.asc()).filter(Measuring.tank_id == tank_id).all()
+    page_title = 'Информация по ЦКТ'
+    
+    return render_template('tank/tank_info.html', title=page_title, tank=tank, measuring=measuring, yeats=yeats)
 
 
 @blueprint.route('/create-tank')
