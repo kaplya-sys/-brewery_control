@@ -1,3 +1,7 @@
+import base64
+from io import BytesIO
+from matplotlib.figure import Figure
+import numpy
 from webapp.tank.enums import TitleBeer
 
 def number_of_brews_for_full_tank(number_tank):
@@ -60,3 +64,32 @@ def is_beer_need_cooling(title_beer, density):
     if density <= get_density_for_cooling(title_beer):
         return True
     return False
+
+
+def date_format(date):
+    """return formatted date"""
+    return date.strftime("%d-%m-%y,%H:%M")
+
+
+def create_diagrams(title, temperature, density, pressure, ticks):
+    """the function outputs a measurement diagram"""
+    x = numpy.arange(len(ticks))
+    width = 0.2
+    fig = Figure()
+    ax = fig.subplots()
+    rects1 = ax.bar(x - width/2, temperature, width, label='Температура')
+    rects2 = ax.bar(x + width/2, density, width, label='Давление')
+    rects3 = ax.bar(x + width + width/2, pressure, width, label='Плотность')
+    ax.set_ylabel('Масштаб')
+    ax.set_title(f"ЦКТ № {title}")
+    ax.set_xticks(x, ticks)
+    ax.legend()
+    ax.bar_label(rects1, padding=2)
+    ax.bar_label(rects2, padding=2)
+    ax.bar_label(rects3, padding=2)
+    fig.tight_layout()
+
+    buf = BytesIO()
+    fig.savefig(buf, format="png")
+    data = base64.b64encode(buf.getbuffer()).decode("ascii")
+    return f"data:image/png;base64,{data}"
