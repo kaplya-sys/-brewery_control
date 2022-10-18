@@ -1,5 +1,6 @@
 from datetime import datetime
 from flask import Blueprint ,flash, jsonify, render_template, redirect, request, url_for
+from flask_login import login_required
 
 from webapp.user.decorators import brewer_required
 from webapp.task.forms import CreateTasksForm
@@ -15,6 +16,15 @@ def view_tasks():
     tasks = Task.query.all()
     
     return render_template('task/all_tasks.html', tasks=tasks, title=page_title)
+
+
+@blueprint.route('/<int:user_id>')
+@login_required
+def view_user_tasks(user_id):
+    page_title = 'Мои задачи'
+    tasks = Task.query.filter(Task.user_id == user_id).all()
+    
+    return render_template('task/user_tasks.html', tasks=tasks, title=page_title)
 
 
 @blueprint.route('/create')
@@ -75,3 +85,15 @@ def process_delete_task():
     flash('Задача успешно удалена.')
     
     return redirect(url_for('tasks.view_tasks'))
+
+
+@blueprint.route('/process-fulfilled-task', methods=['POST'])
+@login_required
+def process_fulfilled_task():
+    data = request.form.getlist('task_checked')
+    for id in data:
+        task = Task.query.filter(Task.id==id).first()
+        task.completed = True
+    db.session.commit()
+    
+    return redirect(url_for('tasks.view_user_tasks', user_id=task.user_id))
