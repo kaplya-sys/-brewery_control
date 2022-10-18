@@ -1,0 +1,20 @@
+.tank-info {
+    font-weight: 700;
+}
+
+.tank-info__title::-webkit-details-marker {
+    display: none;
+}
+
+.tank-info__title {
+    list-style: none;
+}
+
+.tank-info__title:before {
+    content: '\002B';
+    margin-right: 7px;
+}
+
+.tank-info[open] .tank-info__title:before {
+    content: '\2212';
+}

@@ -27,6 +27,20 @@
           <a class="nav-link disabled" href="{{ url_for('admin.create_user') }}">Зарегистрировать сотрудника</a>
           {% endif %}
         </li>
+        <li class="nav-item">
+          {% if current_user.is_superuser or is_brewer%}
+            <a class="nav-link disabled" href="{{ url_for('tasks.view_tasks') }}">Задачи</a>
+          {% else %}
+            {%if current_user.is_authenticated%}
+              <a class="nav-link disabled" href="#">Задачи</a>
+            {% endif %}
+          {% endif %}
+        </li>
+        <li class="nav-item">
+          {% if current_user.is_superuser or is_brewer%}
+            <a class="nav-link disabled" href="{{ url_for('tasks.task_create') }}">Добавить задачу</a>
+          {% endif %}
+        </li>
       </ul>
       <form class="form-inline my-2 my-lg-0">
         <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
