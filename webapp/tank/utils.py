@@ -3,6 +3,7 @@ from io import BytesIO
 from matplotlib.figure import Figure
 import numpy
 from webapp.tank.enums import TitleBeer
+from webapp.tank.models import Tank, Measuring
 
 def number_of_brews_for_full_tank(number_tank):
     """returns the required number of slides to fill the tank"""
@@ -66,13 +67,8 @@ def is_beer_need_cooling(title_beer, density):
     return False
 
 
-def date_format(date):
-    """return formatted date"""
-    return date.strftime("%d-%m-%y,%H:%M")
-
-
-def create_diagrams(title, temperature, density, pressure, ticks):
-    """the function outputs a measurement diagram"""
+def generate_diagrams(title, temperature, density, pressure, ticks):
+    """the function generate a measurement diagram"""
     x = numpy.arange(len(ticks))
     width = 0.2
     fig = Figure()
@@ -93,3 +89,20 @@ def create_diagrams(title, temperature, density, pressure, ticks):
     fig.savefig(buf, format="png")
     data = base64.b64encode(buf.getbuffer()).decode("ascii")
     return f"data:image/png;base64,{data}"
+
+
+def create_diagrams_for_tanks():
+    diagrams = {}
+    for tank in Tank.query.order_by(Tank.number.asc()):
+        create_date = []
+        temperature = []
+        density = []
+        pressure = []
+        for measuring in Measuring.query.filter(tank.id == Measuring.tank_id).limit(5):
+            temperature.append(measuring.temperature)
+            pressure.append(measuring.pressure)
+            density.append(measuring.density)
+            create_date.append(measuring.create_at.strftime("%d-%m-%y,%H:%M"))
+
+        diagrams[tank.id] = generate_diagrams(tank.number, temperature, density, pressure, create_date)
+    return diagrams

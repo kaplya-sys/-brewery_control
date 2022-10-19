@@ -1,82 +1,88 @@
 {% extends "base.html" %}
 
 {% block content %}
-<section>
-  <div>
-    <div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="taskModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-body">
-            <form>
-              <div class="mb-3">
-                <label for="recipient-name" class="col-form-label">Заголовок:</label>
-                <input type="text" class="form-control" id="recipient-name">
-              </div>
-              <div class="mb-3">
-                <label for="message-text" class="col-form-label">Текст:</label>
-                <textarea class="form-control" id="message-text"></textarea>
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" id="task-close-btn">Закрыть</button>
-            <button type="button" class="btn btn-primary" id="task-update-btn">Изменить</button>
+  <section>
+    <div>
+      <div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="taskModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-body">
+              <form>
+                <div class="mb-3">
+                  <label for="recipient-name" class="col-form-label">Заголовок:</label>
+                  <input type="text" class="form-control" id="recipient-name">
+                </div>
+                <div class="mb-3">
+                  <label for="message-text" class="col-form-label">Текст:</label>
+                  <textarea class="form-control" id="message-text"></textarea>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" id="task-close-btn">Закрыть</button>
+              <button type="button" class="btn btn-primary" id="task-update-btn">Изменить</button>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
-<section class="container">
-  {% if tasks|length != 0 %}
-  <form class="justify-content-center" action="{{ url_for('tasks.process_delete_task') }}" method="POST">
-    <ul class="list-group list-group-flush">
-      {% for task in tasks %}
-      <li class="list-group-item d-flex">
-        <div class="form-group form-check my-auto mr-4">
-          <input class="form-check-input" type="checkbox" value="{{ task.id }}" name="task_checked">
-        </div>
-        <div class="col">
-          <div class="d-flex justify-content-between">
-            {% if task.completed %}
-            <span class="text-success">Выполнено</span>
-            {% else %}
-            <span class="text-secondary">Активно</span>
-            {% endif %}
+  </section>
+  <section class="container">
+    {% if tasks %}
+      <form class="justify-content-center" action="{{ url_for('tasks.process_delete_task') }}" method="POST">
+        <ul class="list-group list-group-flush">
+          {% for task in tasks %}
+            <li class="list-group-item d-flex">
+              <div class="form-group form-check my-auto mr-4">
+                <input class="form-check-input" type="checkbox" value="{{ task.id }}" name="task_checked">
+              </div>
+              <div class="col">
+                <div class="d-flex justify-content-between">
+                  {% if task.completed %}
+                    <span class="text-success">Выполнено</span>
+                  {% else %}
+                    <span class="text-secondary">Активно</span>
+                  {% endif %}
 
-            <div>
-              <a class="ml-auto" href="#" id="{{ task.id }}" name="task-open-btn">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil"
-                  viewBox="0 0 16 16">
-                  <path
-                    d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
-                </svg>
-              </a>
-            </div>
-          </div>
+                  <div>
+                    <a class="ml-auto" href="#" id="{{ task.id }}" name="task-open-btn">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil"
+                        viewBox="0 0 16 16">
+                        <path
+                          d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
+                      </svg>
+                    </a>
+                  </div>
+                </div>
 
-          <div>
-            <h3 class="text-center">{{ task.title }}</h3>
-            <p>{{ task.text }}</p>
-            <span>Дата создания: </span><time class="mt-2"
-              datetime="{{ task.create_at }}">{{ task.create_at.strftime("%d. %m. %Y") }}</time>
-            {% if task.update_at %}
-            <span class="ml-5">Дата изменения: </span><time class="mt-2"
-              datetime="{{ task.update_at }}">{{ task.update_at.strftime("%d. %m. %Y") }}</time>
-            {% endif %}
-          </div>
+                <div>
+                  <h3 class="text-center">{{ task.title }}</h3>
+                  <p>{{ task.text }}</p>
+                  <span>
+                    Дата создания: 
+                  </span><time class="mt-2" datetime="{{ task.create_at }}">
+                            {{ task.create_at.strftime("%d. %m. %Y") }}
+                          </time>
+                  {% if task.update_at %}
+                    <span class="ml-5">
+                      Дата изменения: 
+                    </span><time class="mt-2" datetime="{{ task.update_at }}">
+                              {{ task.update_at.strftime("%d. %m. %Y") }}
+                            </time>
+                  {% endif %}
+                </div>
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+        <div class="col d-flex justify-content-end align-items-end">
+          <button type="submit" class="btn btn-danger ml-auto mt-3">Удалить</button>
         </div>
-      </li>
-      {% endfor %}
-    </ul>
-    <div class="col d-flex justify-content-end align-items-end">
-      <button type="submit" class="btn btn-danger ml-auto mt-3">Удалить</button>
-    </div>
-  </form>
-  {% else %}
-  <div class="row justify-content-center">
-    <h2>Нет активных задач!</h2>
-  </div>
-  {% endif %}
-</section>
+      </form>
+    {% else %}
+      <div class="row justify-content-center">
+        <h2>Нет активных задач!</h2>
+      </div>
+    {% endif %}
+  </section>
 {% endblock %}

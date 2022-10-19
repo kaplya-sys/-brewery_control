@@ -7,16 +7,13 @@ const modalUpdateElement = document.getElementById('task-update-btn');
 const modalInputElement = document.getElementById('recipient-name');
 const modalTextareaElement = document.getElementById('message-text');
 const modal = new bootstrap.Modal(modalElement, options);
-
-window.addEventListener('unload', () => {
-    localStorage.removeItem(itemTask);
-});
+let task_id = '';
 
 const getTaskData = async(id) => {
     try {
         const response = await fetch(`/task/update-task/${id}`);
         const task = await response.json();
-        localStorage.setItem(itemTask, JSON.stringify(task));
+        return task;
     } catch (error) {
         alert('Не удалось загрузить данные');
     }
@@ -38,8 +35,8 @@ const updateTask = async(task) => {
 
 for (let i = 0; i < modalOpenElement.length; i++) {
     modalOpenElement[i].addEventListener('click', async() => {
-        await getTaskData(modalOpenElement[i].id);
-        const task = JSON.parse(localStorage.getItem(itemTask));
+        task_id = modalOpenElement[i].id
+        const task = await getTaskData(modalOpenElement[i].id);
         if (task) {
             modalInputElement.value = task.title;
             modalTextareaElement.value = task.text;
@@ -55,7 +52,7 @@ modalCloseElement.addEventListener('click', () => {
 modalUpdateElement.addEventListener('click', async() => {
     const text = modalTextareaElement.value;
     const title = modalInputElement.value;
-    const task = JSON.parse(localStorage.getItem(itemTask));
+    const task = await getTaskData(task_id);
     const data = {
         id: task.id,
         title,
