@@ -1,14 +1,39 @@
 from flask import Blueprint ,flash, render_template, redirect, url_for
+from flask_login import login_required
 
 from webapp.db import db
 from webapp.tank.forms import CreateTankForm, MeasuringForm
 from webapp.tank.models import Tank, Measuring
-from webapp.tank.utils import number_of_brews_for_full_tank, planned_expected_volume, is_beer_need_cooling, is_beer_need_grooving
+from webapp.tank.utils import (
+    number_of_brews_for_full_tank,
+    planned_expected_volume,
+    is_beer_need_cooling,
+    is_beer_need_grooving,
+    create_diagrams_for_tanks
+    )
+from webapp.yeasts.models import Yeasts
 from webapp.user.decorators import brewer_required
 
 blueprint = Blueprint('tank', __name__, url_prefix='/tank')
 
 
+@blueprint.route('/')
+@login_required
+def view_tanks():
+    diagrams = create_diagrams_for_tanks()
+    page_title = 'Активные ЦКТ'
+  
+    return render_template('tank/tanks_view.html', title=page_title, diagrams=diagrams)
+
+@blueprint.route('/<int:tank_id>')
+@login_required
+def view_tank_info(tank_id):
+    tank = Tank.query.filter(Tank.id == tank_id).first()
+    yeats = Yeasts.query.filter(Yeasts.id == tank.yeasts_id).first()
+    measuring = Measuring.query.order_by(Measuring.create_at.asc()).filter(Measuring.tank_id == tank_id).all()
+    page_title = 'Информация по ЦКТ'
+    
+    return render_template('tank/tank_info.html', title=page_title, tank=tank, measuring=measuring, yeats=yeats)
 
 
 @blueprint.route('/create-tank')

@@ -26,7 +26,7 @@ def process_login():
             login_user(user, remember=form.remember_me.data)
             flash('Вы успешно вошли на сайт')
 
-            return render_template('base.html', title='Login') # заглушка, пока нет главной страницы
+            return redirect(url_for('tank.view_tanks'))
           
     flash('Неправильные имя или пароль')
     return redirect(url_for('user.login'))
@@ -35,4 +35,4 @@ def process_login():
 def logout():
     logout_user()
 
-    return render_template('base.html', title='render logout') # заглушка, пока нет главной страницы
+    return redirect(url_for('user.login'))
