@@ -9,8 +9,7 @@ from webapp.tank.utils import (
     planned_expected_volume,
     is_beer_need_cooling,
     is_beer_need_grooving,
-    create_diagrams,
-    date_format,
+    create_diagrams_for_tanks
     )
 from webapp.yeasts.models import Yeasts
 from webapp.user.decorators import brewer_required
@@ -21,20 +20,7 @@ blueprint = Blueprint('tank', __name__, url_prefix='/tank')
 @blueprint.route('/')
 @login_required
 def view_tanks():
-    diagrams = {}
-    for tank in Tank.query.order_by(Tank.number.asc()):
-        create_date = []
-        temperature = []
-        density = []
-        pressure = []
-        for measuring in Measuring.query.filter(tank.id == Measuring.tank_id).limit(5):
-            temperature.append(measuring.temperature)
-            pressure.append(measuring.pressure)
-            density.append(measuring.density)
-            create_date.append(date_format(measuring.create_at))
-
-        diagrams[tank.id] = create_diagrams(tank.number, temperature, density, pressure, create_date)
-
+    diagrams = create_diagrams_for_tanks()
     page_title = 'Активные ЦКТ'
   
     return render_template('tank/tanks_view.html', title=page_title, diagrams=diagrams)

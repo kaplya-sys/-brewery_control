@@ -29,14 +29,16 @@ def task_create():
 @brewer_required
 def process_create_task():
     form = CreateTasksForm()
-    new_task = Task(
-        title=form.title.data,
-        text=form.text.data,
-        user_id=form.user.data
+
+    if form.validate_on_submit():
+        new_task = Task(
+            title=form.title.data,
+            text=form.text.data,
+            user_id=form.user.data
         )
-    db.session.add(new_task)
-    db.session.commit()
-    flash('Задача успешно добавлена.')
+        db.session.add(new_task)
+        db.session.commit()
+        flash('Задача успешно добавлена.')
 
     return redirect(url_for('tasks.task_create'))
 
@@ -44,24 +46,29 @@ def process_create_task():
 @brewer_required
 def update_task(task_id):
 
-    task = Task.query.filter(Task.id==task_id).first()
-    return jsonify({
-        'id': task.id,
-        'title': task.title,
-        'text': task.text
-    })
+    task = Task.query.filter(Task.id == task_id).first()
+    if task:
+        return jsonify({
+            'id': task.id,
+            'title': task.title,
+            'text': task.text
+        })
+
 
 @blueprint.route('/process-update-task', methods=['POST'])
 @brewer_required
 def process_update_task():
     data = request.get_json()
-    task = Task.query.filter(Task.id==data['id']).first()
-    task.title = data['title']
-    task.text = data['text']
-    task.update_at = datetime.now()
-    db.session.commit()
-    flash('Задача успешно обновлена.')
-    
+
+    if data:
+        task = Task.query.filter(Task.id == data['id']).first()
+        if task:
+            task.title = data['title']
+            task.text = data['text']
+            task.update_at = datetime.now()
+            db.session.commit()
+            flash('Задача успешно обновлена.')
+
     return redirect(url_for('tasks.view_tasks'))
 
 
@@ -69,9 +76,11 @@ def process_update_task():
 @brewer_required
 def process_delete_task():
     data = request.form.getlist('task_checked')
-    for id in data:
-        Task.query.filter(Task.id==id).delete()
-    db.session.commit()
-    flash('Задача успешно удалена.')
-    
+
+    if data:
+        for id in data:
+            Task.query.filter(Task.id == id).delete()
+        db.session.commit()
+        flash('Задача успешно удалена.')
+
     return redirect(url_for('tasks.view_tasks'))
