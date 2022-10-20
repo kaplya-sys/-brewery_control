@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <section class="container">
+    {% if tasks %}
+      <form class="justify-content-center" action="{{ url_for('tasks.process_fulfilled_task') }}" method="POST">
+        <ul class="list-group list-group-flush">
+          {% for task in tasks %}
+            <li class="list-group-item d-flex">
+              <div class="form-group form-check my-auto mr-4">
+                <input class="form-check-input" type="checkbox" value="{{ task.id }}" name="task_checked">
+              </div>
+              <div class="col">
+                {% if task.completed %}
+                  <span class="text-success">Выполнено</span>
+                {% else %}
+                  <span class="text-secondary">Активно</span>
+                {% endif %}
+                <h3 class="text-center">{{ task.title }}</h3>
+                <p>{{ task.text }}</p>
+                <span>
+                  Дата создания: 
+                </span><time class="mt-2" datetime="{{ task.create_at }}">
+                          {{ task.create_at.strftime("%d. %m. %Y") }}
+                        </time>
+                {% if task.update_at %}
+                  <span class="ml-5">
+                    Дата изменения: 
+                  </span><time class="mt-2" datetime="{{ task.update_at }}">
+                            {{ task.update_at.strftime("%d. %m. %Y") }}
+                          </time>
+                {% endif %}
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+        <div class="col d-flex justify-content-end align-items-end">
+          <button type="submit" class="btn btn-success ml-auto mt-3">Выполнено</button>
+        </div>
+      </form>
+    {% else %}
+      <div class="row justify-content-center">
+        <h2>Нет активных задач!</h2>
+      </div>
+    {% endif %}
+  </section>
+{% endblock %}
