@@ -13,7 +13,6 @@ class User(db.Model, UserMixin):
     lastname = db.Column(db.String(50), nullable=True)
     password = db.Column(db.String(), nullable=False)
     employee_position = db.Column(db.Enum(Profession), nullable=False)
-    task = relationship('Task', backref='users')
     
     def set_password(self, password):
         self.password = generate_password_hash(password)
