@@ -1,4 +1,5 @@
-from flask import Blueprint ,flash, render_template, redirect, url_for
+from unicodedata import name
+from flask import Blueprint ,flash, render_template, redirect, url_for, request
 from flask_login import login_required
 
 from webapp.db import db
@@ -12,6 +13,7 @@ from webapp.tank.utils import (
     create_diagrams_for_tanks
     )
 from webapp.yeasts.models import Yeasts
+from webapp.yeasts.utils import get_need_yeasts, get_list_of_suitable_tanks
 from webapp.user.decorators import brewer_required
 
 blueprint = Blueprint('tank', __name__, url_prefix='/tank')
@@ -107,3 +109,16 @@ def process_measuring():
     for field, error in form.errors.items():
         flash(f'{field} is {error[0]}')
     return redirect(url_for('tank.measuring_tank'))
+
+
+@blueprint.route('/index', methods=['GET', 'POST'])
+def get_choise_suitable_tanks():
+    if request.method == 'POST':
+        choise_title_beer = str(request.data)[2:-1]
+        yeast = get_need_yeasts(choise_title_beer)
+        list_tanks = get_list_of_suitable_tanks(yeast)
+        if not list_tanks:
+            new_yeast = Yeasts(
+                name=yeast
+            )
+    return redirect(url_for('tank.create_tank'))

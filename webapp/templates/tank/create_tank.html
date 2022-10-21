@@ -1,23 +1,40 @@
 {% extends "base.html" %}
-
 {% block content %}
+<!-- <script src="{{ url_for('static', filename='script.js') }}" defer></script> -->
 {% if current_user.is_authenticated %}
     <div class="row justify-content-center">
-        <div class="col-4">
-
+        <div class="col-4"> 
             <form action="{{ url_for('tank.process_create_tank') }}" method="POST">
                 {{ form.hidden_tag() }}
                 <div class="form-group">
                     {{ form.number.label }}
                     {{ form.number() }}
                 </div>
-                <div class="form-group">
+                <div class="form-group" onchange="myFunc()">
                     {{ form.title.label }}
                     {{ form.title() }}
+                <script>
+                    function myFunc(){
+                        let select = document.getElementById("title").value;
+                        fetch('http://127.0.0.1:5000/tank/index', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'text/plain;charset=UTF-8'
+                                },
+                            body: select})
+                            .then((response)=>{
+                                if (response.ok) {
+
+                                } 
+                            })
+                    }
+                </script>
                 </div>
+                <br>
                 {{ form.submit }}
             </form>
         </div>
+
     </div>
 {% else %}
 <div class="container">
