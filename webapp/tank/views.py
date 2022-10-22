@@ -1,3 +1,4 @@
+import json
 from unicodedata import name
 from flask import Blueprint ,flash, render_template, redirect, url_for, request
 from flask_login import login_required
@@ -13,7 +14,7 @@ from webapp.tank.utils import (
     create_diagrams_for_tanks
     )
 from webapp.yeasts.models import Yeasts
-from webapp.yeasts.utils import get_need_yeasts, get_list_of_suitable_tanks
+from webapp.yeasts.utils import get_need_yeasts, get_list_of_suitable_tanks, get_id_now_yeast
 from webapp.user.decorators import brewer_required
 
 blueprint = Blueprint('tank', __name__, url_prefix='/tank')
@@ -61,9 +62,22 @@ def process_create_tank():
             previous_brew_number = Tank.query.order_by(Tank.id.desc()).first().brew_number_last
         numbers_brew = number_of_brews_for_full_tank(form.number.data)
 
+        now_id, generation = get_id_now_yeast(form.yeasts.data)
+        name_yasts = get_need_yeasts(form.title.data)
+        if now_id == -1:
+            generation = 0
+            flash('Нет подходящих дрожжей. Нужно использовать сухие')
+        new_yeast = Yeasts(
+            name = name_yasts,
+            cycles = generation + 1
+        )
+        db.session.add(new_yeast)
+        db.session.commit()
+
         new_tank = Tank(
             number=form.number.data,
             title=form.title.data,
+            yeasts_id = new_yeast.id,
             expected_volume= numbers_brew * planned_expected_volume(form.number.data),
             brew_number_first = previous_brew_number + 1,
             brew_number_last = previous_brew_number + numbers_brew,
@@ -72,7 +86,7 @@ def process_create_tank():
         db.session.commit()
         flash('ЦКТ добавлен')
 
-    return render_template('base.html', title='add tank')
+    return redirect(url_for('tank.view_tank_info', tank_id = new_tank.id))
 
 
 @blueprint.route('/measuring')
@@ -111,14 +125,16 @@ def process_measuring():
     return redirect(url_for('tank.measuring_tank'))
 
 
-@blueprint.route('/index', methods=['GET', 'POST'])
+@blueprint.route('/yeast-request-processing', methods=['GET', 'POST'])
 def get_choise_suitable_tanks():
+
     if request.method == 'POST':
         choise_title_beer = str(request.data)[2:-1]
         yeast = get_need_yeasts(choise_title_beer)
         list_tanks = get_list_of_suitable_tanks(yeast)
         if not list_tanks:
-            new_yeast = Yeasts(
-                name=yeast
-            )
+            return ['Нет подходящих дрожжей']
+        else:
+            jsonList = json.dumps(list_tanks)
+            return jsonList
     return redirect(url_for('tank.create_tank'))

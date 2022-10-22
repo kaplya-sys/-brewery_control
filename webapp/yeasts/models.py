@@ -9,4 +9,4 @@ class Yeasts(db.Model):
     cycles = db.Column(db.Integer, default=0, nullable=False)
 
     def __repr__(self):
-        return f"ЦКТ - {self.tanks}\nДрожжи {self.name.value} {self.cycles}-генерации"
+        return f"Дрожжи {self.name.value} {self.cycles}-генерации"

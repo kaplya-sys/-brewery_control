@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% block content %}
-<!-- <script src="{{ url_for('static', filename='script.js') }}" defer></script> -->
 {% if current_user.is_authenticated %}
     <div class="row justify-content-center">
         <div class="col-4"> 
@@ -10,25 +9,15 @@
                     {{ form.number.label }}
                     {{ form.number() }}
                 </div>
-                <div class="form-group" onchange="myFunc()">
+                <div class="form-group" id="titleform">
                     {{ form.title.label }}
                     {{ form.title() }}
-                <script>
-                    function myFunc(){
-                        let select = document.getElementById("title").value;
-                        fetch('http://127.0.0.1:5000/tank/index', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'text/plain;charset=UTF-8'
-                                },
-                            body: select})
-                            .then((response)=>{
-                                if (response.ok) {
-
-                                } 
-                            })
-                    }
-                </script>
+                </div>
+                <div class="form-group" id="yeastform">
+                    {{ form.yeasts.label }}
+                    <select class="form-control" id="yeasts" name="yeasts">
+                        <option value="0">Выберите сорт</option>
+                    </select>
                 </div>
                 <br>
                 {{ form.submit }}
