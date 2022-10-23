@@ -2,22 +2,21 @@ const formTitle = document.getElementById("titleform");
 const yeastSelect = document.getElementById("yeasts"); 
 
 
-formTitle.addEventListener("change", function(){
-    let select = document.getElementById("title").value;
+formTitle.addEventListener("change", (event) => {
     fetch(`/tank/yeast-request-processing`, {
         method: 'POST',
         headers: {
             'Content-Type': 'text/plain;charset=UTF-8'
             },
-        body: select})
+        body: event.target.value})
         .then((response)=>{
             if (response.ok) {
                 let json = response.json()
                 .then((json)=>{
                     $('#yeasts').empty();
-                    for (let i in json) {
+                    for (let tank_info in json) {
                         let opt = document.createElement("option");
-                        opt.innerText=json[i];               
+                        opt.innerText=json[tank_info];               
                         yeastSelect.append(opt);        
                       }
                 })

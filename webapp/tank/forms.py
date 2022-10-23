@@ -1,4 +1,3 @@
-from email.policy import default
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, SelectField, IntegerField, FloatField
 from wtforms.validators import DataRequired
@@ -19,7 +18,7 @@ class CreateTankForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super(CreateTankForm, self).__init__(*args, **kwargs)
         self.title.choices = [(i.value, TitleBeer.product_name(i)) for i in TitleBeer]
-        self.title.choices.insert(0, (0, 'Выберите сорт'))
+        self.title.choices.insert(0, (None, 'Выберите сорт'))
 
 
 class MeasuringForm(FlaskForm):

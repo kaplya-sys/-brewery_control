@@ -3,27 +3,27 @@ from webapp.tank.enums import TitleBeer
 from webapp.yeasts.models import Yeasts
 
 
-def get_need_yeasts(beer_name):
-    beer_name = getattr(TitleBeer, beer_name)
+def get_the_right_yeasts(beer_name): 
+    type_of_beer = TitleBeer(beer_name)
     yeast_34_70 = [
         TitleBeer.kellerbier,
         TitleBeer.dunkelbier,
         TitleBeer.bropils,
         TitleBeer.traditional_light,
         TitleBeer.traditional_dark]
-    if beer_name in yeast_34_70:
+    if type_of_beer in yeast_34_70:
         return TypeOfYeast.w_34_70
-    elif beer_name == TitleBeer.wheatbeer:
+    elif type_of_beer == TitleBeer.wheatbeer:
         return TypeOfYeast.wb_06
-    elif beer_name == TitleBeer.traditional_wheat:
+    elif type_of_beer == TitleBeer.traditional_wheat:
         return TypeOfYeast.k_97
-    elif beer_name == TitleBeer.cider:
+    elif type_of_beer == TitleBeer.cider:
         return TypeOfYeast.maxifarm
 
 
 def is_the_generation_suitable(type_yeast, generate_yeast):
     if type_yeast != TypeOfYeast.w_34_70 and generate_yeast >= 1:
-            return False
+        return False
     if generate_yeast >= 6:
         return False
     else:
