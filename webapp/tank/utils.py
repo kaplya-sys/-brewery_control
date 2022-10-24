@@ -83,6 +83,7 @@ def generate_diagrams(title, temperature, density, pressure, ticks):
     ax.bar_label(rects1, padding=2)
     ax.bar_label(rects2, padding=2)
     ax.bar_label(rects3, padding=2)
+    ax.set_xbound(-0.43000000000000005, 4.630000000000001)
     fig.tight_layout()
 
     buf = BytesIO()
