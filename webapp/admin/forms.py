@@ -38,7 +38,7 @@ class CreateUserForm(FlaskForm):
             (Profession.brewer.value, Profession.brewer.get_translated_value()),
             (Profession.assistant.value, Profession.assistant.get_translated_value())
             ],
-        render_kw={'class': 'form-select'}
+        render_kw={'class': 'form-select mb-3'}
         )
     submit = SubmitField(
         'Отправить',
