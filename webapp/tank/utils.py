@@ -70,12 +70,12 @@ def is_beer_need_cooling(title_beer, density):
 def generate_diagrams(title, temperature, density, pressure, ticks):
     """the function generate a measurement diagram"""
     x = numpy.arange(len(ticks))
-    width = 0.2
+    width = 0.3
     fig = Figure()
     ax = fig.subplots()
     rects1 = ax.bar(x - width/2, temperature, width, label='Температура')
-    rects2 = ax.bar(x + width/2, density, width, label='Давление')
-    rects3 = ax.bar(x + width + width/2, pressure, width, label='Плотность')
+    rects2 = ax.bar(x + width/2, density, width, label='Плотность')
+    rects3 = ax.bar(x + width + width/2, pressure, width, label='Давление')
     ax.set_ylabel('Масштаб')
     ax.set_title(f"ЦКТ № {title}")
     ax.set_xticks(x, ticks)

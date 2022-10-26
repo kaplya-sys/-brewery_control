@@ -26,7 +26,7 @@ def process_login():
             login_user(user, remember=form.remember_me.data)
             flash('Вы успешно вошли на сайт')
 
-            return redirect(url_for('tank.view_tanks'))
+            return redirect(url_for('main.view_tanks'))
           
     flash('Неправильные имя или пароль')
     return redirect(url_for('user.login'))

@@ -10,7 +10,6 @@ from webapp.tank.utils import (
     planned_expected_volume,
     is_beer_need_cooling,
     is_beer_need_grooving,
-    create_diagrams_for_tanks
     )
 from webapp.yeasts.models import Yeasts
 from webapp.yeasts.utils import get_the_right_yeasts, get_list_of_suitable_tanks, get_id_now_yeast
@@ -18,14 +17,6 @@ from webapp.user.decorators import brewer_required
 
 blueprint = Blueprint('tank', __name__, url_prefix='/tank')
 
-
-@blueprint.route('/')
-@login_required
-def view_tanks():
-    diagrams = create_diagrams_for_tanks()
-    page_title = 'Активные ЦКТ'
-  
-    return render_template('tank/tanks_view.html', title=page_title, diagrams=diagrams)
 
 @blueprint.route('/<int:tank_id>')
 @login_required

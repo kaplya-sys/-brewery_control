@@ -3,27 +3,26 @@
 {% block content %}
 {% if current_user.is_authenticated %}
 <div class="row justify-content-center">
-    <div class="col-4">
-
+    <div class="col-4 border border-light shadow p-3 mb-5 bg-white rounded mt-5">
         <form action="{{ url_for('tank.process_measuring') }}" method="POST">
             {{ form.hidden_tag() }}
-            <div class="form-group">
+            <div class="mb-3">
                 {{ form.tank_id.label }}
                 {{ form.tank_id() }}
             </div>
-            <div class="form-group">
+            <div class="mb-3">
                 {{ form.temperature.label }}
                 {{ form.temperature() }}
             </div>
-            <div class="form-group">
+            <div class="mb-3">
                 {{ form.density.label }}
                 {{ form.density() }}
             </div>
-            <div class="form-group">
+            <div class="mb-3">
                 {{ form.pressure.label }}
                 {{ form.pressure() }}
             </div>
-            <div class="form-group">
+            <div class="mb-3">
                 {{ form.comment.label }}
                 {{ form.comment() }}
             </div>
