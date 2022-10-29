@@ -99,7 +99,7 @@ def create_diagrams_for_tanks():
         temperature = []
         density = []
         pressure = []
-        for measuring in Measuring.query.filter(tank.id == Measuring.tank_id).limit(5):
+        for measuring in Measuring.query.order_by(Measuring.create_at.desc()).filter(tank.id == Measuring.tank_id).limit(5):
             temperature.append(measuring.temperature)
             pressure.append(measuring.pressure)
             density.append(measuring.density)
@@ -107,3 +107,7 @@ def create_diagrams_for_tanks():
 
         diagrams[tank.id] = generate_diagrams(tank.number, temperature, density, pressure, create_date)
     return diagrams
+
+
+def generate_tank_id():
+    return [(tank.id, f'{tank.number} - {tank.title.product_name()}') for tank in Tank.query.all()]
