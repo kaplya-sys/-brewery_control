@@ -3,7 +3,7 @@ from wtforms import StringField, SubmitField, SelectField, IntegerField, FloatFi
 from wtforms.validators import DataRequired
 
 from webapp.tank.enums import TitleBeer
-from webapp.tank.utils import generate_tank_id
+from webapp.tank.utils import generate_title_beer_list
 
 
 class CreateTankForm(FlaskForm):
@@ -31,7 +31,7 @@ class MeasuringForm(FlaskForm):
 
     def __init__(self, *args, **kwargs):
         super(MeasuringForm, self).__init__(*args, **kwargs)
-        self.tank_id.choices = generate_tank_id()
+        self.tank_id.choices = generate_title_beer_list()
 
 
 class PourBeerForm(FlaskForm):
@@ -43,4 +43,4 @@ class PourBeerForm(FlaskForm):
 
     def __init__(self, *args, **kwargs):
         super(PourBeerForm, self).__init__(*args, **kwargs)
-        self.tank_id.choices = generate_tank_id()
+        self.tank_id.choices = generate_title_beer_list()

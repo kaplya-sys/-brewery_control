@@ -109,5 +109,5 @@ def create_diagrams_for_tanks():
     return diagrams
 
 
-def generate_tank_id():
+def generate_title_beer_list():
     return [(tank.id, f'{tank.number} - {tank.title.product_name()}') for tank in Tank.query.all()]

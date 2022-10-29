@@ -151,4 +151,6 @@ def process_pour_beer():
             tank.actual_volume += volume_of_bottled_beer
             db.session.commit()
             flash('Данные успешно внесены')
+        else:
+            flash('Выбранная ЦКТ не обнаружена.')
     return redirect(url_for('tank.pour_beer'))
