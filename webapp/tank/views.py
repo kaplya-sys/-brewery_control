@@ -10,6 +10,7 @@ from webapp.tank.utils import (
     planned_expected_volume,
     is_beer_need_cooling,
     is_beer_need_grooving,
+    show_error_message,
     )
 from webapp.yeasts.models import Yeasts
 from webapp.yeasts.utils import get_the_right_yeasts, get_list_of_suitable_tanks, get_id_now_yeast
@@ -111,8 +112,7 @@ def process_measuring():
         flash('Данные успешно заполнены')
         return redirect(url_for('tank.measuring_tank'))
     
-    for field, error in form.errors.items():
-        flash(f'{field} is {error[0]}')
+    show_error_message(form.errors.items())
     return redirect(url_for('tank.measuring_tank'))
 
 
@@ -153,4 +153,5 @@ def process_pour_beer():
             flash('Данные успешно внесены')
         else:
             flash('Выбранная ЦКТ не обнаружена.')
+    show_error_message(form.errors.items())
     return redirect(url_for('tank.pour_beer'))

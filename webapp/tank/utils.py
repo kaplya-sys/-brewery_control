@@ -1,5 +1,6 @@
 import base64
 from io import BytesIO
+from flask import flash
 from matplotlib.figure import Figure
 import numpy
 from webapp.tank.enums import TitleBeer
@@ -111,3 +112,7 @@ def create_diagrams_for_tanks():
 
 def generate_title_beer_list():
     return [(tank.id, f'{tank.number} - {tank.title.product_name()}') for tank in Tank.query.all()]
+    
+def show_error_message(error_messages):
+    for field, error in error_messages():
+        flash(f'{field} is {error[0]}')
