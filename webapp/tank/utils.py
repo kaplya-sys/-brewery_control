@@ -1,5 +1,6 @@
 import base64
 from io import BytesIO
+from flask import flash
 from matplotlib.figure import Figure
 import numpy
 from webapp.tank.enums import TitleBeer
@@ -99,7 +100,7 @@ def create_diagrams_for_tanks():
         temperature = []
         density = []
         pressure = []
-        for measuring in Measuring.query.filter(tank.id == Measuring.tank_id).limit(5):
+        for measuring in Measuring.query.order_by(Measuring.create_at.desc()).filter(tank.id == Measuring.tank_id).limit(5):
             temperature.append(measuring.temperature)
             pressure.append(measuring.pressure)
             density.append(measuring.density)
@@ -107,3 +108,11 @@ def create_diagrams_for_tanks():
 
         diagrams[tank.id] = generate_diagrams(tank.number, temperature, density, pressure, create_date)
     return diagrams
+
+
+def generate_title_beer_list():
+    return [(tank.id, f'{tank.number} - {tank.title.product_name()}') for tank in Tank.query.all()]
+    
+def show_error_message(error_messages):
+    for field, error in error_messages():
+        flash(f'{field} is {error[0]}')

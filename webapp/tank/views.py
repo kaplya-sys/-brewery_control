@@ -3,13 +3,14 @@ from flask import Blueprint ,flash, render_template, redirect, url_for, request
 from flask_login import login_required
 
 from webapp.db import db
-from webapp.tank.forms import CreateTankForm, MeasuringForm
+from webapp.tank.forms import CreateTankForm, MeasuringForm, PourBeerForm
 from webapp.tank.models import Tank, Measuring
 from webapp.tank.utils import (
     number_of_brews_for_full_tank,
     planned_expected_volume,
     is_beer_need_cooling,
     is_beer_need_grooving,
+    show_error_message,
     )
 from webapp.yeasts.models import Yeasts
 from webapp.yeasts.utils import get_the_right_yeasts, get_list_of_suitable_tanks, get_id_now_yeast
@@ -32,10 +33,11 @@ def view_tank_info(tank_id):
 @blueprint.route('/create-tank')
 @brewer_required
 def create_tank():
-    page_title = 'Добавить ЦКТ'
+    page_title = 'Добавление ЦКТ'
     create_form = CreateTankForm()
 
     return render_template('tank/create_tank.html', title=page_title, form=create_form)
+
 
 @blueprint.route('/process-create_tank', methods=['POST'])
 @brewer_required
@@ -81,7 +83,7 @@ def process_create_tank():
 
 @blueprint.route('/measuring')
 def measuring_tank():
-        page_title = 'Внести измерения'
+        page_title = 'Внесение измерения'
         create_form = MeasuringForm()
 
         return render_template('tank/measuring.html', title=page_title, form=create_form)
@@ -110,8 +112,7 @@ def process_measuring():
         flash('Данные успешно заполнены')
         return redirect(url_for('tank.measuring_tank'))
     
-    for field, error in form.errors.items():
-        flash(f'{field} is {error[0]}')
+    show_error_message(form.errors.items())
     return redirect(url_for('tank.measuring_tank'))
 
 
@@ -128,3 +129,29 @@ def get_choise_suitable_tanks():
             jsonList = json.dumps(list_tanks)
             return jsonList
     return redirect(url_for('tank.create_tank'))
+
+
+@blueprint.route('/pour-beer')
+@login_required
+def pour_beer():
+    page_title = 'Разлив пива из ЦКТ'
+    form = PourBeerForm()
+
+    return render_template('tank/pour_beer.html', title=page_title, form=form)
+
+
+@blueprint.route('/process-pour-beer', methods=['POST'])
+@login_required
+def process_pour_beer():
+    form = PourBeerForm()
+    if form.validate_on_submit():
+        volume_of_bottled_beer = form.kegs.data * form.volume.data
+        tank = Tank.query.filter(Tank.id == form.tank_id.data).first()
+        if tank:
+            tank.actual_volume += volume_of_bottled_beer
+            db.session.commit()
+            flash('Данные успешно внесены')
+        else:
+            flash('Выбранная ЦКТ не обнаружена.')
+    show_error_message(form.errors.items())
+    return redirect(url_for('tank.pour_beer'))
