@@ -1,5 +1,6 @@
 import base64
 from io import BytesIO
+from flask import flash
 from matplotlib.figure import Figure
 import numpy
 from webapp.tank.enums import TitleBeer
@@ -70,12 +71,12 @@ def is_beer_need_cooling(title_beer, density):
 def generate_diagrams(title, temperature, density, pressure, ticks):
     """the function generate a measurement diagram"""
     x = numpy.arange(len(ticks))
-    width = 0.2
+    width = 0.3
     fig = Figure()
     ax = fig.subplots()
     rects1 = ax.bar(x - width/2, temperature, width, label='Температура')
-    rects2 = ax.bar(x + width/2, density, width, label='Давление')
-    rects3 = ax.bar(x + width + width/2, pressure, width, label='Плотность')
+    rects2 = ax.bar(x + width/2, density, width, label='Плотность')
+    rects3 = ax.bar(x + width + width/2, pressure, width, label='Давление')
     ax.set_ylabel('Масштаб')
     ax.set_title(f"ЦКТ № {title}")
     ax.set_xticks(x, ticks)
@@ -99,7 +100,7 @@ def create_diagrams_for_tanks():
         temperature = []
         density = []
         pressure = []
-        for measuring in Measuring.query.filter(tank.id == Measuring.tank_id).limit(5):
+        for measuring in Measuring.query.order_by(Measuring.create_at.desc()).filter(tank.id == Measuring.tank_id).limit(5):
             temperature.append(measuring.temperature)
             pressure.append(measuring.pressure)
             density.append(measuring.density)
@@ -107,3 +108,11 @@ def create_diagrams_for_tanks():
 
         diagrams[tank.id] = generate_diagrams(tank.number, temperature, density, pressure, create_date)
     return diagrams
+
+
+def generate_title_beer_list():
+    return [(tank.id, f'{tank.number} - {tank.title.product_name()}') for tank in Tank.query.all()]
+    
+def show_error_message(error_messages):
+    for field, error in error_messages():
+        flash(f'{field} is {error[0]}')

@@ -31,7 +31,7 @@ def view_user_tasks(user_id):
 @blueprint.route('/create')
 @brewer_required
 def task_create():
-    page_title = 'Добавить задачу'
+    page_title = 'Добавление задачи'
     form = CreateTasksForm()
 
     return render_template('task/create_task.html', form=form, title=page_title)

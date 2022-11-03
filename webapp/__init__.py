@@ -8,6 +8,7 @@ from webapp.tank.views import blueprint as tank_blueprint
 from webapp.admin.views import blueprint as admin_blueprint
 from webapp.yeasts.views import blueprint as yeasts_blueprint
 from webapp.task.views import blueprint as task_blueprint
+from webapp.main.views import blueprint as main_blueprint
 from webapp.stock.views import blueprint as stock_blueprint
 
 def create_app():
@@ -19,6 +20,7 @@ def create_app():
     app.register_blueprint(tank_blueprint)
     app.register_blueprint(task_blueprint)
     app.register_blueprint(stock_blueprint)
+    app.register_blueprint(main_blueprint)
 
     db.init_app(app)
     migrate = Migrate(app, db, compare_type = True)

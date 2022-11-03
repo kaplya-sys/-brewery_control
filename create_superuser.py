@@ -8,7 +8,7 @@ from webapp.user.models import User
 
 app = create_app()
 with app.app_context():
-    username = input('ВВедите имя пользователя: ')
+    username = input('Введите имя пользователя: ')
 
     if User.query.filter(User.username == username).count():
         print('Пользователь с таким именем существует.')
