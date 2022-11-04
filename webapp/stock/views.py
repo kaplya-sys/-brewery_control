@@ -24,13 +24,15 @@ def append_in_stock():
 @login_required
 def process_append_in_stock():
     form = json.loads(request.data)
-    for product in form:
-        if not None in product:
+    for index in range(len(form["type_product"])):
+        if form["type_product"][index] == 'None':
+            flash(f'Ошибка ввода')
+        else:
             try:
                 new_product = Stock(
-                    type_product = product[0],
-                    name_product = product[1],
-                    amount_product = int(product[2])
+                    type_product = form["type_product"][index],
+                    name_product = form["name_product"][index],
+                    amount_product = int(form["amount_product"][index])
                 )
 
                 db.session.add(new_product)
@@ -39,16 +41,14 @@ def process_append_in_stock():
 
             except IntegrityError:
                 db.session.rollback()
-                Stock.query.filter(Stock.name_product==product[1]).\
-                    update({Stock.amount_product:product[2] + Stock.amount_product}, synchronize_session = False)
+                Stock.query.filter(Stock.name_product==form["name_product"][index]).\
+                    update({Stock.amount_product:int(form["amount_product"][index]) + Stock.amount_product}, synchronize_session = False)
                 db.session.commit()
                 flash('Обновлено')
 
             except DataError:
                 flash('Ошибка ввода')
                 return redirect(url_for('stock.append_in_stock'))
-        else:
-            flash('')
     
     return redirect(url_for('stock.append_in_stock'))
 

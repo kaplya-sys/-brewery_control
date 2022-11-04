@@ -1,3 +1,5 @@
+from webapp.stock.enums import ProductType
+
 malt_range = [
     'Pilsner (SП) (40 кг.)',
     'Pilsner Premium (SП) (25 кг.)',
@@ -27,11 +29,11 @@ yeasts_range = [
 ]
 
 def get_the_right_product(type):
-    if type == 'malt':
+    if type == ProductType.malt.name:
         return malt_range
-    elif type == 'hop':
+    elif type == ProductType.hop.name:
         return hop_range
-    elif type == 'yeast':
+    elif type == ProductType.yeast.name:
         return yeasts_range
     else:
-        return ['Нет учета']
+        return None

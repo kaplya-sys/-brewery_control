@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
 {% if current_user.is_authenticated %}
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.1/jquery.min.js"></script>
+
 <div class="row justify-content">
     <div class="col-8"> 
         <form action="{{ url_for('stock.process_append_in_stock') }}" method="POST" id="form_all">
@@ -29,7 +31,7 @@
             <br>
         </form>
         <br>
-        <a class="btn btn-primary" onclick="return log()" href="{{ url_for('stock.append_in_stock') }}">Отправить</a>
+        <a class="btn btn-primary" onclick="return add_product()" href="{{ url_for('stock.stock_view') }}">Отправить</a>
     </div>
 
 </div>

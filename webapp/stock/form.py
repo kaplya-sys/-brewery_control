@@ -15,5 +15,5 @@ class AppendProductForm(FlaskForm):
 
     def __init__(self, *args, **kwargs):
         super(AppendProductForm, self).__init__( *args, **kwargs)
-        self.type_product0.choices = [(prod.value, ProductType.type_name(prod)) for prod in ProductType]
+        self.type_product0.choices = [(prod.value, ProductType.translate_name(prod)) for prod in ProductType]
         self.type_product0.choices.insert(0, (None, '--------'))

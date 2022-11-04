@@ -41,7 +41,7 @@ function addFieldType(){
     type_field.setAttribute('class', 'form-control')
     type_field.setAttribute('id', 'type_product' + counts_forms)
     type_field.setAttribute('name', 'type_product' + counts_forms)
-    let list_types = [["--------", "None"], ["Солод", "malt"], ["Хмель", "hop"], ["Дрожжи", "yeast"], ["Другое", "other"]];
+    let list_types = [["--------", "None"], ["Солод", "malt"], ["Хмель", "hop"], ["Дрожжи", "yeast"]];
     for (i in list_types){
         let newOption = new Option(list_types[i][0], list_types[i][1]);
         type_field.appendChild(newOption)
@@ -83,19 +83,26 @@ function addField(){
 }
 
 
-function log(){
-    let list_products = []
+function add_product(){
+    let set_product = {},
+        list_type = [],
+        list_name = [],
+        list_amount = []
+
     for (let count = 0; count < counts_forms; count++){
         let type = doc.getElementById('type_product' + count).value
         let name = doc.getElementById('name_product' + count).value
         let amound = doc.getElementById('amount_product' + count).value
-        list_products.push([type, name, amound])
+        list_type.push(type)
+        list_name.push(name)
+        list_amount.push(amound)
     }
+    set_product = {"type_product": list_type, "name_product": list_name, "amount_product": list_amount}
     fetch(`/stock/process-append`,{
         method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset=utf-8'
         },
-        body: JSON.stringify(list_products)
+        body: JSON.stringify(set_product)
     });
 }   
