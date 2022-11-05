@@ -1,11 +1,12 @@
 import json
-from flask import Blueprint ,flash, render_template, redirect, url_for, request
+from flask import Blueprint ,flash, render_template, redirect, url_for, request, jsonify
 from flask_login import login_required
 
 from webapp.db import db
 from webapp.tank.forms import CreateTankForm, MeasuringForm, PourBeerForm
 from webapp.tank.models import Tank, Measuring
 from webapp.tank.utils import (
+    create_diagrams_for_tanks,
     number_of_brews_for_full_tank,
     planned_expected_volume,
     is_beer_need_cooling,
@@ -155,3 +156,36 @@ def process_pour_beer():
             flash('Выбранная ЦКТ не обнаружена.')
     show_error_message(form.errors.items())
     return redirect(url_for('tank.pour_beer'))
+
+@blueprint.route('/tanks-view', methods=['GET'])
+def view_tanks():
+    diagrams = create_diagrams_for_tanks()
+    return jsonify({
+            'diagrams': diagrams
+        })
+
+
+@blueprint.route('/tanks-info', methods=['GET'])
+def view_info():
+    args = request.args
+    tank_measuring = []
+    tank = Tank.query.filter(Tank.id == args['tank_id']).first()
+    yeats = Yeasts.query.filter(Yeasts.id == tank.yeasts_id).first()
+    for measuring in Measuring.query.order_by(Measuring.create_at.asc()).filter(Measuring.tank_id == tank.id).all():
+        tank_measuring.append(dict(
+            temperature=measuring.temperature,
+            density=measuring.density,
+            pressure=measuring.pressure,
+            comment=measuring.comment,
+            create_at=measuring.create_at.strftime("%d-%m-%Y, %H:%M")
+        ))
+    return jsonify({
+        'tank_number': tank.number,
+        'tank_title_value': tank.title.value,
+        'yeats': yeats.name.value,
+        'tank_beer_grooving': 'Да' if tank.beer_grooving else 'Нет',
+        'tank_cooling': 'Да' if tank.cooling else 'Нет',
+        'tank_expected_volume': tank.expected_volume,
+        'tank_actual_volume': tank.actual_volume,
+        'measuring': tank_measuring
+    })
