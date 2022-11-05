@@ -3,7 +3,7 @@
 На сайте возможность добавления цистерн для пива, вид дрожжей. Внесение измерений для таких критериев, как давление, температура, плотность и отображение их в графическом виде. А также есть возможность регистрации сотрудников, назначения задач с возможностью редактирования,  выполнения и удаления.
 ***
 ## Скриншоты:
-<img src="https://i.postimg.cc/50YfwzFk/schedule.png" width="500" alt="Графики">
+[![Графики](https://i.postimg.cc/50YfwzFk/schedule.png)](https://postimg.cc/JD8w8Gxb)
 <img src="https://i.postimg.cc/dt8tHGNb/add-raw-material.png" width="500" alt="Склад">
 <img src="https://i.postimg.cc/XvDVGLXC/register.png" width="500" alt="Регистрация сотрудника">
 <img src="https://i.postimg.cc/RZdC94BG/add-task.png" width="500" alt="Добавление задачи">
