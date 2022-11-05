@@ -3,11 +3,11 @@
 На сайте возможность добавления цистерн для пива, вид дрожжей. Внесение измерений для таких критериев, как давление, температура, плотность и отображение их в графическом виде. А также есть возможность регистрации сотрудников, назначения задач с возможностью редактирования,  выполнения и удаления.
 ***
 ## Скриншоты:
-<img src="https://i.postimg.cc/50YfwzFk/schedule.png" width="500" alt="Графики">
-<img src="https://i.postimg.cc/dt8tHGNb/add-raw-material.png" width="500" alt="Склад">
-<img src="https://i.postimg.cc/XvDVGLXC/register.png" width="500" alt="Регистрация сотрудника">
-<img src="https://i.postimg.cc/RZdC94BG/add-task.png" width="500" alt="Добавление задачи">
-<img src="https://i.postimg.cc/255kSMjY/task.png" width="500" alt="Задачи">
+<img src="https://i.postimg.cc/9XDzfyqQ/schedule.png" width="500" alt="Графики">
+<img src="https://i.postimg.cc/rmmXQCL0/add-raw-material.png" width="500" alt="Склад">
+<img src="https://i.postimg.cc/C5nyVh5w/register.png" width="500" alt="Регистрация сотрудника">
+<img src="https://i.postimg.cc/76WvcGxB/add-task.png" width="500" alt="Добавление задачи">
+<img src="https://i.postimg.cc/8c22p2fM/task.png" width="500" alt="Задачи">
 
 ***
 ## Запуск с использованием _Docker_:
@@ -35,7 +35,7 @@ __Добавить суперпользователя запустив _create_s
     python3 create_superuser.py
     
 ***
-## Запуск с без использования _Docker_:
+## Запуск без использования _Docker_:
 __Клонируйте репозиторий:__
 
     git clone https://github.com/alekseevwork/-brewery_control.git
