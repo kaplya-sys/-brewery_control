@@ -154,7 +154,8 @@ def process_pour_beer():
             flash('Данные успешно внесены')
         else:
             flash('Выбранная ЦКТ не обнаружена.')
-    show_error_message(form.errors.items())
+    else:
+        show_error_message(form.errors.items())
     return redirect(url_for('tank.pour_beer'))
 
 @blueprint.route('/tanks-view', methods=['GET'])

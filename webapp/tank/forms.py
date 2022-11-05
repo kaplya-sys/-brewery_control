@@ -37,7 +37,7 @@ class MeasuringForm(FlaskForm):
 class PourBeerForm(FlaskForm):
 
     tank_id = SelectField('Номер ЦКТ',validators=[DataRequired()], render_kw={"class": "form-control"})
-    volume = IntegerField('Объём кеги', validators=[DataRequired()], default=10, render_kw={"class": "form-control"})
+    volume = IntegerField('Объём кеги', validators=[DataRequired()], default=30, render_kw={"class": "form-control"})
     kegs = IntegerField('Количество кег', validators=[DataRequired()], render_kw={"class": "form-control"})
     submit = SubmitField('Разлить', render_kw={"class": "btn btn-primary"})
 
