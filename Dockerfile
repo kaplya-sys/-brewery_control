@@ -1,19 +1,16 @@
-FROM python:3.10-slim-buster
+FROM python:3.10.7-slim-buster
 
-WORKDIR /brewery
+WORKDIR /server
 
+ENV PIP_ROOT_USER_ACTION=ignore
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-RUN apt-get update -y && \
-    apt-get upgrade -y && \
-    pip install --upgrade pip
-
-COPY ./requirements.txt .
-RUN pip install -r requirements.txt
+RUN apt-get update && apt-get -y upgrade
+RUN pip install --upgrade pip
 
 COPY . .
 
-EXPOSE 5000
+RUN pip install -r requirements.txt
 
-CMD ["rundocker.sh"]
+EXPOSE 5000

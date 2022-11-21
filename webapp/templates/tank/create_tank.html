@@ -1,37 +1,25 @@
 {% extends "base.html" %}
 {% block content %}
-{% if current_user.is_authenticated %}
-    <div class="row justify-content-center">
-        <div class="col-4 border border-light shadow p-3 mb-5 bg-white rounded mt-5"> 
-            <form action="{{ url_for('tank.process_create_tank') }}" method="POST">
-                {{ form.hidden_tag() }}
-                <div class="mb-3">
-                    {{ form.number.label }}
-                    {{ form.number() }}
-                </div>
-                <div class="mb-3" id="titleform">
-                    {{ form.title.label }}
-                    {{ form.title() }}
-                </div>
-                <div class="mb-3" id="yeastform">
-                    {{ form.yeasts.label }}
-                    <select class="form-select mb-3" id="yeasts" name="yeasts">
-                        <option value="0">Выберите сорт</option>
-                    </select>
-                </div>
-                {{ form.submit }}
-            </form>
-        </div>
-
+<div class="row justify-content-center">
+    <div class="col-4 border border-light shadow p-3 mb-5 bg-white rounded mt-5">
+        <form action="{{ url_for('tank.process_create_tank') }}" method="POST">
+            {{ form.hidden_tag() }}
+            <div class="mb-3">
+                {{ form.number.label }}
+                {{ form.number() }}
+            </div>
+            <div class="mb-3" id="titleform">
+                {{ form.title.label }}
+                {{ form.title() }}
+            </div>
+            <div class="mb-3" id="yeastform">
+                {{ form.yeasts.label }}
+                <select class="form-select mb-3" id="yeasts" name="yeasts">
+                    <option value="0">Выберите сорт</option>
+                </select>
+            </div>
+            {{ form.submit }}
+        </form>
     </div>
-{% else %}
-<div class="container">
-    <br>
-    <h1 class="text-center">Страница доступна только для авторизованного пользователя</h1>
-    <br>
-    <center>
-        <a class="btn btn-success btn-lg" href="{{ url_for('user.login') }}" role="button">Войти</a>
-    </center>
 </div>
-{% endif %}
 {% endblock %}

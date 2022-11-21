@@ -3,7 +3,7 @@ from webapp.tank.enums import TitleBeer
 from webapp.yeasts.models import Yeasts
 
 
-def get_the_right_yeasts(beer_name): 
+def get_the_right_yeasts(beer_name):
     type_of_beer = TitleBeer(beer_name)
     yeast_34_70 = [
         TitleBeer.kellerbier,
@@ -37,12 +37,18 @@ def get_list_of_suitable_tanks(yeasts):
         tanks = yeast.tanks
         if is_the_generation_suitable(yeast.name, yeast.cycles):
             for tank in tanks:
-                list_tanks.append([f'#{tank.number} {tank.title.product_name()} др. {yeast.name.value} ген. {yeast.cycles}-я  /{yeast.id}'])
+                list_tanks.append(
+                    [
+                        f'#{tank.number} \
+                        {tank.title.product_name()} \
+                            др. {yeast.name.value} \
+                                ген. {yeast.cycles}-я  /{yeast.id}'
+                    ]
+                )
     return list_tanks
 
 
 def get_id_now_yeast(info_for_yeats):
-    print(info_for_yeats)
     positions_id = info_for_yeats.rfind('/') + 1
     try:
         yeast_id = int(info_for_yeats[positions_id:])

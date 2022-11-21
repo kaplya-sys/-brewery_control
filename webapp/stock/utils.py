@@ -28,6 +28,7 @@ yeasts_range = [
     'Fermentis SafCider',
 ]
 
+
 def get_the_right_product(type):
     if type == ProductType.malt.name:
         return malt_range

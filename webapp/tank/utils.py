@@ -6,6 +6,7 @@ import numpy
 from webapp.tank.enums import TitleBeer
 from webapp.tank.models import Tank, Measuring
 
+
 def number_of_brews_for_full_tank(number_tank):
     """returns the required number of slides to fill the tank"""
 
@@ -17,7 +18,7 @@ def number_of_brews_for_full_tank(number_tank):
         return 8
     elif number_tank == 19:
         return 1
-        
+
 
 def planned_expected_volume(number_of_brews):
     """returns the planned tank volume"""
@@ -26,14 +27,14 @@ def planned_expected_volume(number_of_brews):
     if number_of_brews in range(1, 4):
         volume = 1050
     return volume
- 
+
 
 def get_density_for_grooving(title_beer):
     """returns the required density for beer grooving"""
 
     if title_beer in [TitleBeer.kellerbier, TitleBeer.dunkelbier, TitleBeer.wheatbeer]:
         return 7.5
-    elif title_beer in [TitleBeer.bropils, TitleBeer.traditional_wheat ,TitleBeer.cider]:
+    elif title_beer in [TitleBeer.bropils, TitleBeer.traditional_wheat, TitleBeer.cider]:
         return 6.5
     elif title_beer in [TitleBeer.traditional_dark, TitleBeer.traditional_light]:
         return 6.0
@@ -69,7 +70,6 @@ def is_beer_need_cooling(title_beer, density):
 
 
 def generate_diagrams(title, temperature, density, pressure, ticks):
-    """the function generate a measurement diagram"""
     x = numpy.arange(len(ticks))
     width = 0.3
     fig = Figure()
@@ -86,7 +86,6 @@ def generate_diagrams(title, temperature, density, pressure, ticks):
     ax.bar_label(rects3, padding=2)
     ax.set_xbound(-0.43000000000000005, 4.630000000000001)
     fig.tight_layout()
-
     buf = BytesIO()
     fig.savefig(buf, format="png")
     data = base64.b64encode(buf.getbuffer()).decode("ascii")
@@ -100,19 +99,29 @@ def create_diagrams_for_tanks():
         temperature = []
         density = []
         pressure = []
-        for measuring in Measuring.query.order_by(Measuring.create_at.desc()).filter(tank.id == Measuring.tank_id).limit(5):
+        for measuring in Measuring.query.order_by(
+            Measuring.create_at.desc()
+        ).filter(
+            tank.id == Measuring.tank_id
+        ).limit(5):
             temperature.append(measuring.temperature)
             pressure.append(measuring.pressure)
             density.append(measuring.density)
             create_date.append(measuring.create_at.strftime("%d-%m-%y,%H:%M"))
-
-        diagrams[tank.id] = generate_diagrams(tank.number, temperature, density, pressure, create_date)
+        diagrams[tank.id] = generate_diagrams(
+            tank.number, temperature, density, pressure, create_date)
     return diagrams
 
 
 def generate_title_beer_list():
-    return [(tank.id, f'{tank.number} - {tank.title.product_name()}') for tank in Tank.query.all()]
-    
+    return [
+        (
+            tank.id,
+            f'{tank.number} - {tank.title.product_name()}'
+        ) for tank in Tank.query.all()
+    ]
+
+
 def show_error_message(error_messages):
     for field, error in error_messages():
         flash(f'{field} is {error[0]}')

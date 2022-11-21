@@ -1,11 +1,8 @@
 env/
 webapp/__pycache__
-db/
-brew/
-
 docker-compose.yml
 Dockerfile
 .git
 .gitignore
-.env
-.env.docker
+run.batdocer
+run.bat

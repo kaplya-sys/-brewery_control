@@ -4,11 +4,11 @@ const productSelect = doc.getElementById("name_product0");
 
 let counts_forms = 1
 
-formName.addEventListener("change", new_choise(0))
+formName.addEventListener("change", new_choice(0))
 
 
-function new_choise(counts_forms){
-    // append choises for name_product field
+function new_choice(counts_forms){
+    // append choices for name_product field
     let next_input = doc.getElementById("type_product" + counts_forms);
     let next_output = doc.getElementById("name_product" + counts_forms);
     next_input.addEventListener("change", (event) => {
@@ -78,7 +78,7 @@ function addField(){
     addFieldType(counts_forms)
     addFieldName(counts_forms)
     addFieldsAmount()
-    new_choise(counts_forms)
+    new_choice(counts_forms)
     counts_forms++;
 }
 

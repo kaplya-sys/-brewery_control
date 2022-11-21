@@ -1,6 +1,7 @@
 from webapp.db import db
 from webapp.yeasts.enums import TypeOfYeast
 
+
 class Yeasts(db.Model):
     __tablename__ = "yeasts"
 

@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 class Profession(Enum):
     brewer = 'brewer'
     assistant = 'assistant'
@@ -7,7 +8,6 @@ class Profession(Enum):
 
     def get_translated_value(self):
         translated_value = None
-
         if self == Profession.brewer:
             translated_value = 'Пивовар'
         elif self == Profession.assistant:

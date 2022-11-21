@@ -2,6 +2,7 @@ from sqlalchemy.orm import relationship
 from datetime import datetime
 from webapp.db import db
 
+
 class Task(db.Model):
     __tablename__ = 'tasks'
 

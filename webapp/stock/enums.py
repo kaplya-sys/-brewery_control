@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 class ProductType(Enum):
     malt = 'malt'
     hop = 'hop'
@@ -12,4 +13,3 @@ class ProductType(Enum):
             ProductType.yeast: 'Дрожжи'
         }
         return types[self]
-    

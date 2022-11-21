@@ -11,5 +11,8 @@ blueprint = Blueprint('main', __name__)
 def view_tanks():
     diagrams = create_diagrams_for_tanks()
     page_title = 'Активные ЦКТ'
-  
-    return render_template('main/index.html', title=page_title, diagrams=diagrams)
+    return render_template(
+        'main/index.html',
+        title=page_title,
+        diagrams=diagrams
+        )

@@ -11,7 +11,6 @@ class TitleBeer(Enum):
     traditional_wheat = 'traditional_wheat'
     cider = 'cider'
 
-
     def product_name(self):
         product = {
             TitleBeer.kellerbier: 'Kellerbier',

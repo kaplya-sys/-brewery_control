@@ -1,37 +1,23 @@
 {% extends "base.html" %}
 {% block content %}
-{% if current_user.is_authenticated %}
-
 <table class="table">
     <thead>
-    <tr>
-        <th scope="col">#</th>
-        <th scope="col">Тип сырья</th>
-        <th scope="col">Наименовение</th>
-        <th scope="col">Колличество (кг.)</th>
-    </tr>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Тип сырья</th>
+            <th scope="col">Наименовение</th>
+            <th scope="col">Колличество (кг.)</th>
+        </tr>
     </thead>
     {% for item in content %}
     <tbody>
-    <tr>
-        <th scope="row"></th>
-        <td>{{item.type_product.translate_name()}}</td>
-        <td>{{item.name_product}}</td>
-        <td>{{item.amount_product}}</td>
-    </tr>
+        <tr>
+            <th scope="row"></th>
+            <td>{{item.type_product.translate_name()}}</td>
+            <td>{{item.name_product}}</td>
+            <td>{{item.amount_product}}</td>
+        </tr>
     </tbody>
     {% endfor %}
 </table>
-
-
-{% else %}
-<div class="container">
-    <br>
-    <h1 class="text-center">Страница доступна только для авторизованного пользователя</h1>
-    <br>
-    <center>
-        <a class="btn btn-success btn-lg" href="{{ url_for('user.login') }}">Войти</a>
-    </center>
-</div>
-{% endif %}
 {% endblock %}

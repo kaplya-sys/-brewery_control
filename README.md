@@ -18,7 +18,7 @@ __Клонируйте репозиторий:__
 __Создайте _.env_ файл и добавьте секретный ключ и адрес базы данных:__
 
     SECRET_KEY = 'надежный ключ'
-    DATABASE_URI = 'база данных://логин:пароль@plocalhost:порт/имя базы данных'
+    DATABASE_URI = 'база данных://логин:пароль@localhost:порт/имя базы данных'
     
 __Создайте _.env.docker_ файл и добавьте логин, пароль и имя базы данных:__
 
@@ -40,7 +40,7 @@ __Клонируйте репозиторий:__
 
     git clone https://github.com/alekseevwork/-brewery_control.git
     
-__Создайте виртуальное окружение и запустите:__
+__Создайте виртуальное окружение и запустите:__  
 Windows:
     
     python -m venv env
@@ -56,7 +56,7 @@ __Создайте _.env_ файл и добавьте секретный клю
     SECRET_KEY = 'надежный ключ'
     DATABASE_URI = 'база данных://логин:пароль@localhost:порт/имя базы данных'
     
-__Установите необходимые пакеты:__
+__Установите необходимые пакеты:__  
 Windows:
     
     pip install -r requirements.txt
@@ -65,7 +65,7 @@ Linux и Mac:
 
     pip3 install -r requirements.txt
     
-__Запустите проект:__
+__Запустите проект:__  
 Windows:
     
     run.bat
@@ -75,7 +75,7 @@ Linux и Mac:
     chmod +x run.sh
     ./run.sh
 
-__Добавить суперпользователя запустив _create_superuser.py_:__
+__Добавить суперпользователя запустив _create_superuser.py_:__  
 Windows:
     
     python create_superuser.py

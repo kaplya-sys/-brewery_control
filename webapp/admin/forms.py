@@ -3,6 +3,7 @@ from webapp.user.enums import Profession
 from wtforms import PasswordField, StringField, SubmitField, SelectField
 from wtforms.validators import DataRequired, EqualTo
 
+
 class CreateUserForm(FlaskForm):
     username = StringField(
         'Имя пользователя:',
@@ -35,8 +36,14 @@ class CreateUserForm(FlaskForm):
     position = SelectField(
         'Должность:',
         choices=[
-            (Profession.brewer.value, Profession.brewer.get_translated_value()),
-            (Profession.assistant.value, Profession.assistant.get_translated_value())
+            (
+                Profession.brewer.value,
+                Profession.brewer.get_translated_value()
+            ),
+            (
+                Profession.assistant.value,
+                Profession.assistant.get_translated_value()
+            )
             ],
         render_kw={'class': 'form-select mb-3'}
         )

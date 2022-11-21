@@ -44,7 +44,7 @@
           {% endif %}
         </li>
         <li class="nav-item">
-          {% if current_user.is_superuser or is_brewer%}
+          {% if current_user.is_superuser or current_user.is_brewer%}
           <a class="nav-link" href="{{ url_for('tasks.view_tasks') }}">Задачи</a>
           {% else %}
           {%if current_user.is_authenticated%}
@@ -53,7 +53,7 @@
           {% endif %}
         </li>
         <li class="nav-item">
-          {% if current_user.is_superuser or is_brewer%}
+          {% if current_user.is_superuser or current_user.is_brewer%}
           <a class="nav-link" href="{{ url_for('tasks.task_create') }}">Добавить задачу</a>
           {% endif %}
         </li>

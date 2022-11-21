@@ -1,22 +1,21 @@
 {% extends "base.html" %}
 {% block content %}
-{% if current_user.is_authenticated %}
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.1/jquery.min.js"></script>
 
 <div class="row justify-content">
-    <div class="col-8"> 
+    <div class="col-8">
         <form action="{{ url_for('stock.process_append_in_stock') }}" method="POST" id="form_all">
             {{ form.hidden_tag() }}
             <div class="row" id="forms">
-                <div class="form-group col-md-4" id="productform"> 
+                <div class="form-group col-md-4" id="productform">
                     {{ form.type_product0.label }}
-                    {{ form.type_product0() }} 
+                    {{ form.type_product0() }}
                 </div>
                 <br>
                 <div class="form-group col-md-4" id="nameproduct">
                     {{ form.name_product0.label }}
                     <select class="form-control" id="name_product0" name="name_product0">
-                        <option value="0">Наименовение</option>
+                        <option value="0">Наименование</option>
                     </select>
                 </div>
                 <br>
@@ -25,9 +24,10 @@
                     {{ form.amount_product0() }}
                 </div>
             </div>
-            <br>  
-            <a class="btn btn-success" onclick="return addField()">Добавить поле</a> 
-            <a class="btn btn-danger" href="{{ url_for('stock.append_in_stock') }}" style="float:right">Очистить поля</a>
+            <br>
+            <a class="btn btn-success" onclick="return addField()">Добавить поле</a>
+            <a class="btn btn-danger" href="{{ url_for('stock.append_in_stock') }}" style="float:right">Очистить
+                поля</a>
             <br>
         </form>
         <br>
@@ -35,14 +35,4 @@
     </div>
 
 </div>
-{% else %}
-<div class="container">
-    <br>
-    <h1 class="text-center">Страница доступна только для авторизованного пользователя</h1>
-    <br>
-    <center>
-        <a class="btn btn-success btn-lg" href="{{ url_for('user.login') }}">Войти</a>
-    </center>
-</div>
-{% endif %}
 {% endblock %}
